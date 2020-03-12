@@ -9,3 +9,4 @@ Team 1:
 Di Méo Lucas,
 Albouy Florent.
 
+Team 2: DJOUDI Ferial Chahinda - PIERRARD Kevin
