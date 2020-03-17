@@ -33,23 +33,19 @@ public class AtomReading {
         NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT,null,true);
 
         for(Node n = iterator.nextNode(); n != null; n = iterator.nextNode()){
-            if(n.getNodeName().contentEquals("title")){
+
+            if(n.getNodeName().contentEquals("id")){
                 test = n.getTextContent();
                 System.out.println((test));
             }
         }
     }
 
-    catch(ParserConfigurationException e){
+    catch(ParserConfigurationException | SAXException | IOException e){
         // factory.newDocumentBuilder()
         e.printStackTrace();
-    } catch(SAXException e){
-        // builder.parse
-        e.printStackTrace();
-    } catch(IOException e){
-        // builder.parse
-        e.printStackTrace();
     }
+
     }
 }
 
