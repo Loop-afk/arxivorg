@@ -1,12 +1,13 @@
 package app.arxivorg.model;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Article {
     String id;
     String dateOfPublication;
     String title;
-    LinkedList<String> author;
+    List<String> author;
     String summary;
     String comment;
     LinkedList<String> category;
@@ -37,11 +38,11 @@ public class Article {
         this.title = title;
     }
 
-    public LinkedList<String> getAuthor() {
+    public List<String> getAuthor() {
         return author;
     }
 
-    public void setAuthor(LinkedList<String> author) {
+    public void setAuthor(List<String> author) {
         this.author = author;
     }
 
