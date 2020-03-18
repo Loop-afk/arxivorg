@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Article {
     String category;
     String linkOfArticle;
     String linkOfArticlePDF;
-    public static List<String> infos = new LinkedList<>();
+    public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
 
     public String getId() {
         return id;
@@ -168,7 +169,6 @@ public class Article {
         catch(ParserConfigurationException | SAXException | IOException e){
             e.printStackTrace();
         }
-        infos.addAll(Collections.singleton(listOfArticle.toString()));
         return listOfArticle;
     }
     @Override

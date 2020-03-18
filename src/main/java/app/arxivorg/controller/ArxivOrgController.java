@@ -14,11 +14,13 @@ import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
 
-    ObservableList<Article> items = FXCollections.observableArrayList();
     @FXML private Button helloWorldButton;
     @FXML private Button goodByeWorldButton;
     @FXML private Label label;
     @FXML private ListView<Article> shortListView;
+    ObservableList<Article> names = FXCollections.observableArrayList(Article.infos);
+
+
 
     //    @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -43,6 +45,6 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     private void shortListView(){
-       shortListView.getItems().addAll(items);
+        shortListView.getItems().addAll(names);
     }
 }
