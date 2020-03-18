@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static app.arxivorg.model.AtomReading.readFile;
+import static app.arxivorg.model.Article.readFile;
 import static javax.print.attribute.standard.MediaSizeName.A;
 
 public class Main {
