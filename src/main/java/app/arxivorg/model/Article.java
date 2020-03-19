@@ -280,7 +280,7 @@ public class Article {
     public static LinkedList<Article> getArticlesByTitle(LinkedList<Article> listOfArticle, String titleWord){
         LinkedList<Article> selectedTitle = new LinkedList<>();
         for (Article article : listOfArticle) {
-            if (article.getTitle().contains(titleWord)) {
+            if (article.getTitle().toLowerCase().contains(titleWord.toLowerCase())) {
                 selectedTitle.addLast(article);
             }
         }
@@ -289,7 +289,7 @@ public class Article {
     public static LinkedList<Article> getArticlesByKeyword(LinkedList<Article> listOfArticle, String keyword){
         LinkedList<Article> selectedTitle = new LinkedList<>();
         for (Article article : listOfArticle) {
-            if (article.getSummary().contains(keyword) || article.getTitle().contains(keyword)) {
+            if (article.getSummary().toLowerCase().contains(keyword.toLowerCase()) || article.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
                 selectedTitle.addLast(article);
             }
         }
