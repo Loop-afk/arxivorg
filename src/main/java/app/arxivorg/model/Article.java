@@ -229,7 +229,7 @@ public class Article {
     }
 
     public static void sortByDateOfPublication(LinkedList<Article> listOfArticle){
-        listOfArticle.sort(new Comparator<Article>() {
+        listOfArticle.sort(new Comparator<>() {
             DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
             @Override
@@ -244,7 +244,7 @@ public class Article {
     }
 
     public static void sortByDateOfUpdate(LinkedList<Article> listOfArticle){
-        listOfArticle.sort(new Comparator<Article>() {
+        listOfArticle.sort(new Comparator<>() {
             DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
             @Override
@@ -259,9 +259,9 @@ public class Article {
     }
 
     public static Article getArticleByID(LinkedList<Article> listOfArticle, String id){
-        for (int i =0; i <listOfArticle.size(); i++){
-            if (listOfArticle.get(i).getId().contains(id)){
-                return listOfArticle.get(i);
+        for (Article article : listOfArticle) {
+            if (article.getId().contains(id)) {
+                return article;
             }
         }
         return null;
@@ -269,11 +269,30 @@ public class Article {
 
     public static LinkedList<Article> getArticlesByAuthor(LinkedList<Article> listOfArticle, String author){
         LinkedList<Article> selectedAuthors = new LinkedList<>();
-        for (int i =0; i <listOfArticle.size(); i++) {
-            if (listOfArticle.get(i).getAuthor().contains(author)) {
-                selectedAuthors.addLast(listOfArticle.get(i));
+        for (Article article : listOfArticle) {
+            if (article.getAuthor().contains(author)) {
+                selectedAuthors.addLast(article);
             }
         }
         return selectedAuthors;
+    }
+
+    public static LinkedList<Article> getArticlesByTitle(LinkedList<Article> listOfArticle, String titleWord){
+        LinkedList<Article> selectedTitle = new LinkedList<>();
+        for (Article article : listOfArticle) {
+            if (article.getTitle().contains(titleWord)) {
+                selectedTitle.addLast(article);
+            }
+        }
+        return selectedTitle;
+    }
+    public static LinkedList<Article> getArticlesByKeyword(LinkedList<Article> listOfArticle, String keyword){
+        LinkedList<Article> selectedTitle = new LinkedList<>();
+        for (Article article : listOfArticle) {
+            if (article.getSummary().contains(keyword) || article.getTitle().contains(keyword)) {
+                selectedTitle.addLast(article);
+            }
+        }
+        return selectedTitle;
     }
 }
