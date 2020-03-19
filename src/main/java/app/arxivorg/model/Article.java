@@ -257,4 +257,23 @@ public class Article {
             }
         });
     }
+
+    public static Article getArticleByID(LinkedList<Article> listOfArticle, String id){
+        for (int i =0; i <listOfArticle.size(); i++){
+            if (listOfArticle.get(i).getId().contains(id)){
+                return listOfArticle.get(i);
+            }
+        }
+        return null;
     }
+
+    public static LinkedList<Article> getArticlesByAuthor(LinkedList<Article> listOfArticle, String author){
+        LinkedList<Article> selectedAuthors = new LinkedList<>();
+        for (int i =0; i <listOfArticle.size(); i++) {
+            if (listOfArticle.get(i).getAuthor().contains(author)) {
+                selectedAuthors.addLast(listOfArticle.get(i));
+            }
+        }
+        return selectedAuthors;
+    }
+}
