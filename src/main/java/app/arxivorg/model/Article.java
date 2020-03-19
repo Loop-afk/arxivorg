@@ -190,38 +190,11 @@ public class Article {
         return listOfArticle;
     }
 
-    //Test pour créer une liste de String à la place d'une liste d'objets Article.
-    /*public static LinkedList<LinkedList<String>> readFile2(String pathname){
-        LinkedList<LinkedList<String>> listOfArticle = new LinkedList<>();
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-
-        try {
-            builder = factory.newDocumentBuilder();
-            Document document = builder.parse(pathname);
-
-            DocumentTraversal traversal = (DocumentTraversal) document;
-            NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
-
-            for (Node n = iterator.nextNode(); n != null; n = iterator.nextNode()) {
-
-                if (n.getNodeName().contentEquals("entry")) {
-                    NodeList nodeList = n.getChildNodes();
-                    LinkedList<String> article = new LinkedList<>();
-                    for (int i = 0; i < nodeList.getLength(); i++) {
-                        if (!nodeList.item(i).getTextContent().trim().equals("")) {
-                            article.addLast(nodeList.item(i).getTextContent().trim());
-                        }
-                    }
-                    listOfArticle.addLast(article);
-                }
-            }
-        }
-            catch (ParserConfigurationException | SAXException | IOException e){
-                e.printStackTrace();
-            }
-                return listOfArticle;
-    }*/
+    @Override
+    public String toString() {
+        String message = "id "+ getId() + "\n Title: "  + getTitle() + "\n Author "  + getAuthor() + "\n Summary "  + getSummary();
+        return message;
+    }
 
     public static Date toDate(String stringDate) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
