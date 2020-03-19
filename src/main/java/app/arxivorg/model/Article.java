@@ -13,11 +13,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Article {
     String id;
+    String dateOfUpdate;
     String dateOfPublication;
     String title;
     List<String> author;
@@ -33,6 +36,14 @@ public class Article {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDateOfUpdate() {
+        return dateOfUpdate;
+    }
+
+    public void setDateOfUpdate(String dateOfUpdate) {
+        this.dateOfUpdate = dateOfUpdate;
     }
 
     public String getDateOfPublication() {
@@ -104,7 +115,7 @@ public class Article {
         LinkedList<Article> listOfArticle = new LinkedList<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
-        String testDate;
+        String stringDate;
 
         try {
             builder = factory.newDocumentBuilder();
@@ -121,10 +132,19 @@ public class Article {
                     List<String> authors = new LinkedList<>();
 
                     for (int i = 0; i < nodeList.getLength(); i++){
+
+                        if(nodeList.item(i).getNodeName().contains("updated")) {
+                            stringDate = nodeList.item(i).getTextContent();
+                            stringDate = stringDate.replace("T", " ");
+                            stringDate = stringDate.replace("Z", "");
+                            article.setDateOfUpdate(stringDate);
+                        }
+
                         if(nodeList.item(i).getNodeName().contains("published")) {
-                            testDate = nodeList.item(i).getTextContent();
-                            testDate = testDate.substring(0,10);
-                            article.setDateOfPublication(testDate);
+                            stringDate = nodeList.item(i).getTextContent();
+                            stringDate = stringDate.replace("T", " ");
+                            stringDate = stringDate.replace("Z","");
+                            article.setDateOfPublication(stringDate);
                         }
 
                         if(nodeList.item(i).getNodeName().contains("id")){
@@ -169,4 +189,72 @@ public class Article {
         }
         return listOfArticle;
     }
-}
+
+    //Test pour créer une liste de String à la place d'une liste d'objets Article.
+    /*public static LinkedList<LinkedList<String>> readFile2(String pathname){
+        LinkedList<LinkedList<String>> listOfArticle = new LinkedList<>();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+
+        try {
+            builder = factory.newDocumentBuilder();
+            Document document = builder.parse(pathname);
+
+            DocumentTraversal traversal = (DocumentTraversal) document;
+            NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
+
+            for (Node n = iterator.nextNode(); n != null; n = iterator.nextNode()) {
+
+                if (n.getNodeName().contentEquals("entry")) {
+                    NodeList nodeList = n.getChildNodes();
+                    LinkedList<String> article = new LinkedList<>();
+                    for (int i = 0; i < nodeList.getLength(); i++) {
+                        if (!nodeList.item(i).getTextContent().trim().equals("")) {
+                            article.addLast(nodeList.item(i).getTextContent().trim());
+                        }
+                    }
+                    listOfArticle.addLast(article);
+                }
+            }
+        }
+            catch (ParserConfigurationException | SAXException | IOException e){
+                e.printStackTrace();
+            }
+                return listOfArticle;
+    }*/
+
+    public static Date toDate(String stringDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+        return sdf.parse(stringDate);
+    }
+
+    public static void sortByDateOfPublication(LinkedList<Article> listOfArticle){
+        listOfArticle.sort(new Comparator<Article>() {
+            DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+
+            @Override
+            public int compare(Article a1, Article a2) {
+                try {
+                    return df.parse(a1.getDateOfPublication()).compareTo(df.parse(a2.getDateOfPublication()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+    }
+
+    public static void sortByDateOfUpdate(LinkedList<Article> listOfArticle){
+        listOfArticle.sort(new Comparator<Article>() {
+            DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+
+            @Override
+            public int compare(Article a1, Article a2) {
+                try {
+                    return df.parse(a1.getDateOfUpdate()).compareTo(df.parse(a2.getDateOfUpdate()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+    }
+    }
