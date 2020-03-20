@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController">
     <children>
       <ListView fx:id="shortListView" layoutX="7.0" layoutY="113.0" prefHeight="586.0" prefWidth="1256.0" />
         <Button fx:id="helloWorldButton" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#displayHelloWorld" text="Hello World" />
         <Button fx:id="goodByeWorldButton" layoutX="162.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#goodByeWorld" text="Good Bye World" />
         <Label fx:id="label" layoutX="307.0" layoutY="51.0" prefHeight="25.0" prefWidth="100.0" wrapText="true" />
+      <Button defaultButton="true" layoutX="474.0" layoutY="51.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="Afficher">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
