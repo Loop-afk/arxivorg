@@ -29,6 +29,7 @@ public class Article extends Authors{
     String category;
     String linkOfArticle;
     String linkOfArticlePDF;
+    public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
 
     public Article(){
         authors = new Authors();
