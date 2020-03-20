@@ -29,6 +29,7 @@ public class Article {
     String category;
     String linkOfArticle;
     String linkOfArticlePDF;
+    public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
 
     public String getId() {
         return id;
@@ -130,7 +131,6 @@ public class Article {
                     NodeList nodeList = n.getChildNodes();
                     Article article = new Article();
                     List<String> authors = new LinkedList<>();
-
                     for (int i = 0; i < nodeList.getLength(); i++){
 
                         if(nodeList.item(i).getNodeName().contains("updated")) {
@@ -189,7 +189,6 @@ public class Article {
         }
         return listOfArticle;
     }
-
     @Override
     public String toString() {
         String message = "id "+ getId() + "\n Title: "  + getTitle() + "\n Author "  + getAuthor() + "\n Summary "  + getSummary();
