@@ -18,18 +18,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Article {
+public class Article extends Authors{
     String id;
     String dateOfUpdate;
     String dateOfPublication;
     String title;
-    List<String> author;
+    Authors authors;
     String summary;
     String comment;
     String category;
     String linkOfArticle;
     String linkOfArticlePDF;
-    public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
+
+    public Article(){
+        authors = new Authors();
+    }
 
     public String getId() {
         return id;
@@ -63,12 +66,12 @@ public class Article {
         this.title = title;
     }
 
-    public List<String> getAuthor() {
-        return author;
+    public Authors getAuthor() {
+        return authors;
     }
 
-    public void setAuthor(List<String> author) {
-        this.author = author;
+    public void setAuthor(Authors authors) {
+        this.authors = authors;
     }
 
     public String getSummary() {
@@ -130,7 +133,8 @@ public class Article {
                 if(n.getNodeName().contentEquals("entry")){
                     NodeList nodeList = n.getChildNodes();
                     Article article = new Article();
-                    List<String> authors = new LinkedList<>();
+                    ArrayList<String> authors = new ArrayList<>();
+
                     for (int i = 0; i < nodeList.getLength(); i++){
 
                         if(nodeList.item(i).getNodeName().contains("updated")) {
@@ -157,7 +161,7 @@ public class Article {
 
                         if (nodeList.item(i).getNodeName().contains("author")) {
                             authors.add(nodeList.item(i).getTextContent().trim());
-                            article.setAuthor(authors);
+                            article.getAuthor().setData(authors);
                         }
 
                         if(nodeList.item(i).getNodeName().contains("summary")){
@@ -189,6 +193,7 @@ public class Article {
         }
         return listOfArticle;
     }
+
     @Override
     public String toString() {
         String message = "id "+ getId() + "\n Title: "  + getTitle() + "\n Author "  + getAuthor() + "\n Summary "  + getSummary();
@@ -242,7 +247,7 @@ public class Article {
     public static LinkedList<Article> getArticlesByAuthor(LinkedList<Article> listOfArticle, String author){
         LinkedList<Article> selectedAuthors = new LinkedList<>();
         for (Article article : listOfArticle) {
-            if (article.getAuthor().contains(author)) {
+            if (article.getAuthor().getData().contains(author)) {
                 selectedAuthors.addLast(article);
             }
         }
