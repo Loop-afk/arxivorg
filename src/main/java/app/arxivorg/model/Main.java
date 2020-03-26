@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         LinkedList<Article> listOfArticle = readFile("test.atom");
         sortByDateOfPublication(listOfArticle);
-        LinkedList<Article> testList = getArticlesByTitle(listOfArticle,"convergence");
+        LinkedList<Article> testList = filteredByKeyword(listOfArticle,"convergence");
         System.out.println(toDate(listOfArticle.get(2).getDateOfPublication()));
     }
 }
