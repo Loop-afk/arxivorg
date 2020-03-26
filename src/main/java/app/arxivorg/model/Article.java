@@ -18,18 +18,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Article {
+public class Article extends Authors{
     String id;
     String dateOfUpdate;
     String dateOfPublication;
     String title;
-    List<String> author;
+    Authors authors;
     String summary;
     String comment;
-    String category;
+    List<String> categories;
     String linkOfArticle;
     String linkOfArticlePDF;
     public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
+
+    public Article(){
+        authors = new Authors();
+    }
 
     public String getId() {
         return id;
@@ -63,12 +67,12 @@ public class Article {
         this.title = title;
     }
 
-    public List<String> getAuthor() {
-        return author;
+    public Authors getAuthor() {
+        return authors;
     }
 
-    public void setAuthor(List<String> author) {
-        this.author = author;
+    public void setAuthor(Authors authors) {
+        this.authors = authors;
     }
 
     public String getSummary() {
@@ -87,12 +91,12 @@ public class Article {
         this.comment = comment;
     }
 
-    public String getCategory() {
-        return category;
+    public List<String> getCategory() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategory(List<String> category) {
+        this.categories = category;
     }
 
     public String getLinkOfArticle() {
@@ -130,7 +134,9 @@ public class Article {
                 if(n.getNodeName().contentEquals("entry")){
                     NodeList nodeList = n.getChildNodes();
                     Article article = new Article();
-                    List<String> authors = new LinkedList<>();
+                    ArrayList<String> authors = new ArrayList<>();
+                    ArrayList<String> categories = new ArrayList<>();
+
                     for (int i = 0; i < nodeList.getLength(); i++){
 
                         if(nodeList.item(i).getNodeName().contains("updated")) {
@@ -157,7 +163,7 @@ public class Article {
 
                         if (nodeList.item(i).getNodeName().contains("author")) {
                             authors.add(nodeList.item(i).getTextContent().trim());
-                            article.setAuthor(authors);
+                            article.getAuthor().setData(authors);
                         }
 
                         if(nodeList.item(i).getNodeName().contains("summary")){
@@ -168,8 +174,9 @@ public class Article {
                             article.setComment(nodeList.item(i).getTextContent());
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("arxiv:primary_category")){
-                            article.setCategory(nodeList.item(i).getAttributes().getNamedItem("xmlns:arxiv").getTextContent());
+                        if(nodeList.item(i).getNodeName().contains("arxiv:primary_category") || nodeList.item(i).getNodeName().contains("category") ){
+                            categories.add(nodeList.item(i).getAttributes().getNamedItem("term").getTextContent());
+                            article.setCategory(categories);
                         }
 
                         if(nodeList.item(i).getNodeName().contains("link")){
@@ -189,6 +196,7 @@ public class Article {
         }
         return listOfArticle;
     }
+
     @Override
     public String toString() {
         String message = "id "+ getId() + "\n Title: "  + getTitle() + "\n Author "  + getAuthor() + "\n Summary "  + getSummary();
@@ -239,32 +247,67 @@ public class Article {
         return null;
     }
 
-    public static LinkedList<Article> getArticlesByAuthor(LinkedList<Article> listOfArticle, String author){
-        LinkedList<Article> selectedAuthors = new LinkedList<>();
-        for (Article article : listOfArticle) {
-            if (article.getAuthor().contains(author)) {
-                selectedAuthors.addLast(article);
-            }
+    public static Authors getAllAuthors(LinkedList<Article> listOfArticle){
+        Authors allAuthors = new Authors();
+        for (Article article : listOfArticle){
+            allAuthors.getData().addAll(article.getAuthor().getData());
         }
-        return selectedAuthors;
+        return allAuthors;
     }
 
-    public static LinkedList<Article> getArticlesByTitle(LinkedList<Article> listOfArticle, String titleWord){
-        LinkedList<Article> selectedTitle = new LinkedList<>();
+    public static String[] toArray(String authors){
+        return authors.split(",");
+    }
+
+    public static LinkedList<Article> filteredByByAuthors(LinkedList<Article> listOfArticle, String[] authors){
+        LinkedList<Article> filteredListByAuthors = new LinkedList<>();
         for (Article article : listOfArticle) {
-            if (article.getTitle().toLowerCase().contains(titleWord.toLowerCase())) {
-                selectedTitle.addLast(article);
+            for (String author : authors) {
+                if (article.getAuthor().getData().contains(author)) {
+                    filteredListByAuthors.addLast(article);
+                }
             }
         }
-        return selectedTitle;
+        return filteredListByAuthors;
     }
-    public static LinkedList<Article> getArticlesByKeyword(LinkedList<Article> listOfArticle, String keyword){
-        LinkedList<Article> selectedTitle = new LinkedList<>();
+
+    public static LinkedList<Article> filteredByKeyword(LinkedList<Article> listOfArticle, String keyword){
+        LinkedList<Article> filteredListByKeyword = new LinkedList<>();
         for (Article article : listOfArticle) {
             if (article.getSummary().toLowerCase().contains(keyword.toLowerCase()) || article.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
-                selectedTitle.addLast(article);
+                filteredListByKeyword.addLast(article);
             }
         }
-        return selectedTitle;
+        return filteredListByKeyword;
+    }
+
+    public static LinkedList<Article> filterByCategory(LinkedList<Article> listOfArticle, String categoryTag){
+        LinkedList<Article> filteredListByCategory = new LinkedList<>();
+        for (Article article : listOfArticle){
+            for(String category : article.getCategory()) {
+                if (category.equals(categoryTag)) {
+                    filteredListByCategory.add(article);
+                }
+            }
+        }
+        return filteredListByCategory;
+    }
+
+    public static LinkedList<Article> filterByDateOfUpdate(LinkedList<Article> listOfArticle, Date date) throws ParseException{
+        LinkedList<Article> filteredListByDateOfUpdate = new LinkedList<>();
+        for (Article article : listOfArticle){
+            if (toDate(article.getDateOfUpdate()).after(date))
+                filteredListByDateOfUpdate.add(article);
+            }
+        return filteredListByDateOfUpdate;
+        }
+
+    public static LinkedList<Article> filterByDateOfPublication(LinkedList<Article> listOfArticle, Date date) throws ParseException{
+        LinkedList<Article> filteredListByDateOfPublication = new LinkedList<>();
+        for (Article article : listOfArticle){
+            if (toDate(article.getDateOfPublication()).after(date))
+                filteredListByDateOfPublication.add(article);
+        }
+        return filteredListByDateOfPublication;
     }
 }
