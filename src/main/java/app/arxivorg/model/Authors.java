@@ -7,7 +7,7 @@ public class Authors {
     private ArrayList<String> data;
 
     public Authors() {
-        ArrayList<String> data = new ArrayList<>();
+        data = new ArrayList<>();
     }
 
     public Authors(List<String> input) {
