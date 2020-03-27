@@ -22,7 +22,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ComboBox id="cbxCategories" prefHeight="29.0" prefWidth="375.0" promptText="Sélectionnez..." />
+            <ComboBox id="cbxCategories" fx:id="cbxCategories" prefHeight="29.0" prefWidth="375.0" promptText="Sélectionnez..." />
             <Label id="lblPeriod" fx:id="lblPeriod" alignment="CENTER" lineSpacing="20.0" prefHeight="40.0" prefWidth="362.0" text="Période" wrapText="true">
                <font>
                   <Font size="14.0" />
