@@ -199,7 +199,7 @@ public class Article extends Authors{
 
     @Override
     public String toString() {
-        String message = "id "+ getId() + "\n Title: "  + getTitle() + "\n Author "  + getAuthor() + "\n Summary "  + getSummary();
+        String message = "id "+ getId() + "\n Title: "  + getTitle() + "\n Author "  + getAuthor() ;
         return message;
     }
 
