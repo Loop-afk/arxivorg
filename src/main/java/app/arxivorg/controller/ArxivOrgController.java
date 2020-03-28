@@ -15,7 +15,7 @@ public class ArxivOrgController implements Initializable {
 
 
     @FXML private ListView<Article> shortListView;
-    @FXML private ComboBox<String> cbxCategories;
+//    @FXML private ComboBox<String> cbxCategories;
     ObservableList<Article> names = FXCollections.observableArrayList(Article.infos);
 
 
@@ -23,7 +23,7 @@ public class ArxivOrgController implements Initializable {
     //    @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         setShortListView();
-        setCbxCategories();
+//        setCbxCategories();
     }
 
 
@@ -33,9 +33,9 @@ public class ArxivOrgController implements Initializable {
         shortListView.getItems().addAll(names);
     }
 
-    @FXML
+/*    @FXML
     private void setCbxCategories(){
         cbxCategories.getItems().addAll(Article.getAllCategories(Article.infos));
-        }
+        }*/
 
 }
