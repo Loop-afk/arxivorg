@@ -39,26 +39,36 @@
                   </ChoiceBox>
                   <Label layoutX="66.0" layoutY="78.0" prefHeight="29.0" prefWidth="96.0" text="Choisir une date" textAlignment="CENTER" textFill="#fcf8f8" />
                   <DatePicker layoutX="26.0" layoutY="114.0" />
-                  <TextField layoutX="84.0" layoutY="184.0" prefHeight="23.0" prefWidth="158.0" promptText="Mots clés" />
+                  <TextField layoutX="84.0" layoutY="184.0" prefHeight="23.0" prefWidth="158.0" promptText="Mots clés, auteurs " />
                   <Button layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Rechercher" />
+                  <Button layoutX="70.0" layoutY="251.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="86.0" style="-fx-border-radius: 12px;" text="Télécharger" />
                </children>
             </Pane>
          </children>
       </VBox>
-      <VBox layoutX="242.0" layoutY="130.0" prefHeight="588.0" prefWidth="749.0">
+      <VBox layoutX="242.0" layoutY="88.0" prefHeight="630.0" prefWidth="749.0">
          <children>
-            <ListView fx:id="shortListView" prefHeight="434.0" prefWidth="766.0" />
-            <Label prefHeight="49.0" prefWidth="767.0" text="Information article" textAlignment="CENTER" textFill="#111111" wrapText="true">
+            <ListView fx:id="shortListView" prefHeight="411.0" prefWidth="749.0" />
+            <Label prefHeight="23.0" prefWidth="642.0" text="Information article" textAlignment="CENTER" textFill="#111111" wrapText="true">
                <font>
                   <Font name="Calibri" size="20.0" />
                </font>
             </Label>
-            <TextField prefHeight="189.0" prefWidth="766.0" text="INFO : ICI ON AFFICHE LES DÉTAILS DE CHAQUE ARTICLE SELECTIONNE (ID , TITRE, AUTEUR, RESUME)" />
+            <Pane prefHeight="193.0" prefWidth="749.0">
+               <children>
+                  <TextField layoutY="6.0" prefHeight="187.0" prefWidth="749.0" text="INFO : ICI ON AFFICHE LES DÉTAILS DE CHAQUE ARTICLE SELECTIONNE (ID , TITRE, AUTEUR, RESUME)" />
+                  <Button layoutX="652.0" layoutY="-23.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="96.0" text="Favoris">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
          </children>
       </VBox>
-      <Pane layoutX="242.0" layoutY="-1.0" prefHeight="132.0" prefWidth="749.0" style="-fx-background-color: #7156DD;">
+      <Pane layoutX="242.0" layoutY="-1.0" prefHeight="91.0" prefWidth="749.0" style="-fx-background-color: #7156BB;">
          <children>
-            <Label cache="true" layoutY="107.0" prefHeight="23.0" prefWidth="767.0" text="Liste d'articles" textAlignment="CENTER" textFill="#fcfafa" wrapText="true">
+            <Label cache="true" layoutY="66.0" prefHeight="23.0" prefWidth="767.0" text="Liste d'articles" textAlignment="CENTER" textFill="#fcfafa" wrapText="true">
                <font>
                   <Font name="Calibri" size="20.0" />
                </font>
