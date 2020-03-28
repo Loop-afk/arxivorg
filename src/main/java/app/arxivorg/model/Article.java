@@ -250,11 +250,26 @@ public class Article extends Authors{
     public static Authors getAllAuthors(LinkedList<Article> listOfArticle){
         Authors allAuthors = new Authors();
         for (Article article : listOfArticle){
-            allAuthors.getData().addAll(article.getAuthor().getData());
+            for(String author : article.getAuthor().getData()){
+                if(!allAuthors.getData().contains(author)){
+                    allAuthors.getData().add(author);
+                }
+            }
         }
         return allAuthors;
     }
 
+    public static List<String> getAllCategories(LinkedList<Article> listOfArticle){
+        List<String> allCategories = new ArrayList<>();
+        for (Article article : listOfArticle){
+            for(String category : article.getCategory()){
+                if(!allCategories.contains(category)){
+                    allCategories.add(category);
+                }
+            }
+        }
+        return allCategories;
+    }
     public static String[] toArray(String authors){
         return authors.split(",");
     }
