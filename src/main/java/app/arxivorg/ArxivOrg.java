@@ -12,7 +12,7 @@ public class ArxivOrg extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/app/arxivorg/view/Main.fxml"));
-        primaryStage.setTitle("ArxivOrg");
+        primaryStage.setTitle("Main Application");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
