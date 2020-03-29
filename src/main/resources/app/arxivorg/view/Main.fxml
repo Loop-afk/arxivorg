@@ -41,7 +41,7 @@
                   <DatePicker layoutX="26.0" layoutY="114.0" />
                   <TextField layoutX="84.0" layoutY="184.0" prefHeight="23.0" prefWidth="158.0" promptText="Mots clés, auteurs " />
                   <Button layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Rechercher" />
-                  <Button layoutX="70.0" layoutY="251.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="86.0" style="-fx-border-radius: 12px;" text="Télécharger" />
+                  <Button fx:id="downloadButton" layoutX="70.0" layoutY="251.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="86.0" style="-fx-border-radius: 12px;" text="Télécharger" />
                </children>
             </Pane>
          </children>
