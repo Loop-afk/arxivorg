@@ -36,6 +36,13 @@ public class ArxivOrgController implements Initializable {
     //  public void showAllPeriod(){
     //     this.periodComboBox.getItems().addAll(managerArticle.getPeriods());
     //    }
+    // @FXML
+    //    public void displaySelected(MouseEvent mouseEvent) {
+    //        int index = listView.getSelectionModel().getSelectedIndex();
+    //        Article article = getArticles().get(index);
+    //        infosTextArea.setText("Title: "+article.getTitle()+"\nAuteurs: "+article.getArticleAuthors()
+    //        +"\nDescription: \n"+article.getSummary()+"\nLien: "+article.getId());
+    //    }
 
 
 
