@@ -39,12 +39,12 @@ public class ArxivOrg extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-        downloadButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                showDialogueWin();
-            }
-        });
+//        downloadButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                showDialogueWin();
+//            }
+//        });
     }
 
     public static void main(String[] args) { launch(args); }

@@ -24,5 +24,18 @@ public class ArxivOrgController implements Initializable {
         shortListView.refresh();
         shortListView.getItems().addAll(names);
     }
+    //show all catégories 
+   // private void showAllCategories(){
+    //        Set<String> categories = new HashSet<>();
+    //        for(Categorie var : managerArticle.getCategories()){
+    //            categories.add(var.getName());
+    //        }
+    //        categorieComboBox.getItems().addAll(categories);
+    //    }
+
+
+
+
+
 
 }
