@@ -13,12 +13,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Article extends Authors{
+public class Article extends Authors {
     String id;
     String dateOfUpdate;
     String dateOfPublication;
@@ -31,7 +35,7 @@ public class Article extends Authors{
     String linkOfArticlePDF;
     public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
 
-    public Article(){
+    public Article() {
         authors = new Authors();
     }
 
@@ -116,7 +120,7 @@ public class Article extends Authors{
     }
 
     @NotNull
-    public static LinkedList<Article> readFile(String pathname){
+    public static LinkedList<Article> readFile(String pathname) {
         LinkedList<Article> listOfArticle = new LinkedList<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -127,37 +131,37 @@ public class Article extends Authors{
             Document document = builder.parse(pathname);
 
             DocumentTraversal traversal = (DocumentTraversal) document;
-            NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT,null,true);
+            NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
 
-            for(Node n = iterator.nextNode(); n != null; n = iterator.nextNode()){
+            for (Node n = iterator.nextNode(); n != null; n = iterator.nextNode()) {
 
-                if(n.getNodeName().contentEquals("entry")){
+                if (n.getNodeName().contentEquals("entry")) {
                     NodeList nodeList = n.getChildNodes();
                     Article article = new Article();
                     ArrayList<String> authors = new ArrayList<>();
                     ArrayList<String> categories = new ArrayList<>();
 
-                    for (int i = 0; i < nodeList.getLength(); i++){
+                    for (int i = 0; i < nodeList.getLength(); i++) {
 
-                        if(nodeList.item(i).getNodeName().contains("updated")) {
+                        if (nodeList.item(i).getNodeName().contains("updated")) {
                             stringDate = nodeList.item(i).getTextContent();
                             stringDate = stringDate.replace("T", " ");
                             stringDate = stringDate.replace("Z", "");
                             article.setDateOfUpdate(stringDate);
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("published")) {
+                        if (nodeList.item(i).getNodeName().contains("published")) {
                             stringDate = nodeList.item(i).getTextContent();
                             stringDate = stringDate.replace("T", " ");
-                            stringDate = stringDate.replace("Z","");
+                            stringDate = stringDate.replace("Z", "");
                             article.setDateOfPublication(stringDate);
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("id")){
+                        if (nodeList.item(i).getNodeName().contains("id")) {
                             article.setId(nodeList.item(i).getTextContent());
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("title")){
+                        if (nodeList.item(i).getNodeName().contains("title")) {
                             article.setTitle(nodeList.item(i).getTextContent());
                         }
 
@@ -166,32 +170,30 @@ public class Article extends Authors{
                             article.getAuthor().setData(authors);
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("summary")){
+                        if (nodeList.item(i).getNodeName().contains("summary")) {
                             article.setSummary(nodeList.item(i).getTextContent());
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("arxiv:comment")){
+                        if (nodeList.item(i).getNodeName().contains("arxiv:comment")) {
                             article.setComment(nodeList.item(i).getTextContent());
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("arxiv:primary_category") || nodeList.item(i).getNodeName().contains("category") ){
+                        if (nodeList.item(i).getNodeName().contains("arxiv:primary_category") || nodeList.item(i).getNodeName().contains("category")) {
                             categories.add(nodeList.item(i).getAttributes().getNamedItem("term").getTextContent());
                             article.setCategory(categories);
                         }
 
-                        if(nodeList.item(i).getNodeName().contains("link")){
-                            if(nodeList.item(i).getAttributes().getNamedItem("title") != null) {
+                        if (nodeList.item(i).getNodeName().contains("link")) {
+                            if (nodeList.item(i).getAttributes().getNamedItem("title") != null) {
                                 article.setLinkOfArticlePDF(nodeList.item(i).getAttributes().getNamedItem("href").getTextContent());
-                            }
-                            else article.setLinkOfArticle(nodeList.item(i).getAttributes().getNamedItem("href").getTextContent());
+                            } else
+                                article.setLinkOfArticle(nodeList.item(i).getAttributes().getNamedItem("href").getTextContent());
                         }
                     }
                     listOfArticle.add(article);
                 }
             }
-        }
-
-        catch(ParserConfigurationException | SAXException | IOException e){
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
         return listOfArticle;
@@ -199,7 +201,7 @@ public class Article extends Authors{
 
     @Override
     public String toString() {
-        String message = "id "+ getId() + "\n Title: "  + getTitle() + "\n Author "  + getAuthor() ;
+        String message = "id " + getId() + "\n Title: " + getTitle() + "\n Author " + getAuthor();
         return message;
     }
 
@@ -208,7 +210,7 @@ public class Article extends Authors{
         return sdf.parse(stringDate);
     }
 
-    public static void sortByDateOfPublication(LinkedList<Article> listOfArticle){
+    public static void sortByDateOfPublication(LinkedList<Article> listOfArticle) {
         listOfArticle.sort(new Comparator<>() {
             DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
@@ -223,7 +225,7 @@ public class Article extends Authors{
         });
     }
 
-    public static void sortByDateOfUpdate(LinkedList<Article> listOfArticle){
+    public static void sortByDateOfUpdate(LinkedList<Article> listOfArticle) {
         listOfArticle.sort(new Comparator<>() {
             DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
@@ -238,7 +240,7 @@ public class Article extends Authors{
         });
     }
 
-    public static Article getArticleByID(LinkedList<Article> listOfArticle, String id){
+    public static Article getArticleByID(LinkedList<Article> listOfArticle, String id) {
         for (Article article : listOfArticle) {
             if (article.getId().contains(id)) {
                 return article;
@@ -247,11 +249,11 @@ public class Article extends Authors{
         return null;
     }
 
-    public static Authors getAllAuthors(LinkedList<Article> listOfArticle){
+    public static Authors getAllAuthors(LinkedList<Article> listOfArticle) {
         Authors allAuthors = new Authors();
-        for (Article article : listOfArticle){
-            for(String author : article.getAuthor().getData()){
-                if(!allAuthors.getData().contains(author)){
+        for (Article article : listOfArticle) {
+            for (String author : article.getAuthor().getData()) {
+                if (!allAuthors.getData().contains(author)) {
                     allAuthors.getData().add(author);
                 }
             }
@@ -259,22 +261,23 @@ public class Article extends Authors{
         return allAuthors;
     }
 
-    public static List<String> getAllCategories(LinkedList<Article> listOfArticle){
+    public static List<String> getAllCategories(LinkedList<Article> listOfArticle) {
         List<String> allCategories = new ArrayList<>();
-        for (Article article : listOfArticle){
-            for(String category : article.getCategory()){
-                if(!allCategories.contains(category)){
+        for (Article article : listOfArticle) {
+            for (String category : article.getCategory()) {
+                if (!allCategories.contains(category)) {
                     allCategories.add(category);
                 }
             }
         }
         return allCategories;
     }
-    public static String[] toArray(String authors){
+
+    public static String[] toArray(String authors) {
         return authors.split(",");
     }
 
-    public static LinkedList<Article> filteredByByAuthors(LinkedList<Article> listOfArticle, String[] authors){
+    public static LinkedList<Article> filteredByByAuthors(LinkedList<Article> listOfArticle, String[] authors) {
         LinkedList<Article> filteredListByAuthors = new LinkedList<>();
         for (Article article : listOfArticle) {
             for (String author : authors) {
@@ -286,7 +289,7 @@ public class Article extends Authors{
         return filteredListByAuthors;
     }
 
-    public static LinkedList<Article> filteredByKeyword(LinkedList<Article> listOfArticle, String keyword){
+    public static LinkedList<Article> filteredByKeyword(LinkedList<Article> listOfArticle, String keyword) {
         LinkedList<Article> filteredListByKeyword = new LinkedList<>();
         for (Article article : listOfArticle) {
             if (article.getSummary().toLowerCase().contains(keyword.toLowerCase()) || article.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
@@ -296,10 +299,10 @@ public class Article extends Authors{
         return filteredListByKeyword;
     }
 
-    public static LinkedList<Article> filterByCategory(LinkedList<Article> listOfArticle, String categoryTag){
+    public static LinkedList<Article> filterByCategory(LinkedList<Article> listOfArticle, String categoryTag) {
         LinkedList<Article> filteredListByCategory = new LinkedList<>();
-        for (Article article : listOfArticle){
-            for(String category : article.getCategory()) {
+        for (Article article : listOfArticle) {
+            for (String category : article.getCategory()) {
                 if (category.equals(categoryTag)) {
                     filteredListByCategory.add(article);
                 }
@@ -308,21 +311,47 @@ public class Article extends Authors{
         return filteredListByCategory;
     }
 
-    public static LinkedList<Article> filterByDateOfUpdate(LinkedList<Article> listOfArticle, Date date) throws ParseException{
+    public static LinkedList<Article> filterByDateOfUpdate(LinkedList<Article> listOfArticle, Date date) throws ParseException {
         LinkedList<Article> filteredListByDateOfUpdate = new LinkedList<>();
-        for (Article article : listOfArticle){
+        for (Article article : listOfArticle) {
             if (toDate(article.getDateOfUpdate()).after(date))
                 filteredListByDateOfUpdate.add(article);
-            }
-        return filteredListByDateOfUpdate;
         }
+        return filteredListByDateOfUpdate;
+    }
 
-    public static LinkedList<Article> filterByDateOfPublication(LinkedList<Article> listOfArticle, Date date) throws ParseException{
+    public static LinkedList<Article> filterByDateOfPublication(LinkedList<Article> listOfArticle, Date date) throws ParseException {
         LinkedList<Article> filteredListByDateOfPublication = new LinkedList<>();
-        for (Article article : listOfArticle){
+        for (Article article : listOfArticle) {
             if (toDate(article.getDateOfPublication()).after(date))
                 filteredListByDateOfPublication.add(article);
         }
         return filteredListByDateOfPublication;
     }
+
+    private static final HttpClient httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_2)
+            .build();
+
+    public static String getArticlesFromArXivWithLimitedNumber(String search, int numberMaxOfArticles) throws Exception {
+        String[] searchWords = toArray(search);
+        String URItoGet = "http://export.arxiv.org/api/query?search_query=all:";
+
+        for (int i = 0; i < searchWords.length; i++) {
+            if (i == 0) {
+                URItoGet += searchWords[i].trim().toLowerCase();
+            } else {
+                URItoGet += "+AND+all:" + searchWords[i].trim().toLowerCase();
+            }
+        }
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(URItoGet + "&start=0&max_results=" + numberMaxOfArticles))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
 }
