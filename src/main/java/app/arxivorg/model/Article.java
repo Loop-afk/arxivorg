@@ -354,4 +354,26 @@ public class Article extends Authors {
         return response.body();
     }
 
+    public static String getArticlesFromArXiv(String search) throws Exception {
+        String[] searchWords = toArray(search);
+        String URItoGet = "http://export.arxiv.org/api/query?search_query=all:";
+
+        for (int i = 0; i < searchWords.length; i++) {
+            if (i == 0) {
+                URItoGet += searchWords[i].trim().toLowerCase();
+            } else {
+                URItoGet += "+AND+all:" + searchWords[i].trim().toLowerCase();
+            }
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(URItoGet))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
 }
