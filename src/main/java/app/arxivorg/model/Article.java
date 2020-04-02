@@ -12,15 +12,19 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 public class Article extends Authors {
     String id;
@@ -120,7 +124,7 @@ public class Article extends Authors {
     }
 
     @NotNull
-    public static LinkedList<Article> readFile(String pathname) {
+    public static LinkedList<Article> readFile(String file) {
         LinkedList<Article> listOfArticle = new LinkedList<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -128,7 +132,9 @@ public class Article extends Authors {
 
         try {
             builder = factory.newDocumentBuilder();
-            Document document = builder.parse(pathname);
+            //TODO:Regarder pour corriger les exceptions que ça lance.
+            //Document document = builder.parse(new InputSource(new StringReader(file)));
+            Document document = builder.parse(file);
 
             DocumentTraversal traversal = (DocumentTraversal) document;
             NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
@@ -166,12 +172,13 @@ public class Article extends Authors {
                         }
 
                         if (nodeList.item(i).getNodeName().contains("author")) {
-                            authors.add(nodeList.item(i).getTextContent().trim());
+                            authors.add(nodeList.item(i).getTextContent().trim().split("\n")[0]);
                             article.getAuthor().setData(authors);
                         }
 
                         if (nodeList.item(i).getNodeName().contains("summary")) {
-                            article.setSummary(nodeList.item(i).getTextContent());
+                            //TODO:Essayer de mieux placer les retours à la ligne pour qu'ils correspondent à la limite de la fenêtre.
+                            article.setSummary(nodeList.item(i).getTextContent()/*.replace("\n", " ")*/);
                         }
 
                         if (nodeList.item(i).getNodeName().contains("arxiv:comment")) {
@@ -185,9 +192,9 @@ public class Article extends Authors {
 
                         if (nodeList.item(i).getNodeName().contains("link")) {
                             if (nodeList.item(i).getAttributes().getNamedItem("title") != null) {
-                                article.setLinkOfArticlePDF(nodeList.item(i).getAttributes().getNamedItem("href").getTextContent());
+                                article.setLinkOfArticlePDF(nodeList.item(i).getAttributes().getNamedItem("href").getTextContent().replace("http","https"));
                             } else
-                                article.setLinkOfArticle(nodeList.item(i).getAttributes().getNamedItem("href").getTextContent());
+                                article.setLinkOfArticle(nodeList.item(i).getAttributes().getNamedItem("href").getTextContent().replace("http","https"));
                         }
                     }
                     listOfArticle.add(article);
@@ -346,7 +353,7 @@ public class Article extends Authors {
         }
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(URItoGet + "&start=0&max_results=" + numberMaxOfArticles))
+                .uri(URI.create(URItoGet+"&start=0&max_results=" + numberMaxOfArticles))
                 .setHeader("User-Agent", "Java 11 HttpClient Bot")
                 .build();
 
@@ -376,4 +383,11 @@ public class Article extends Authors {
         return response.body();
     }
 
+    public static void Download(Article article) throws IOException {
+        URL url = new URL(article.getLinkOfArticlePDF());
+        ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+        String filename = article.getTitle().replaceAll("[:/\"<>?*|]"," ")+".pdf";
+        FileOutputStream fos = new FileOutputStream(filename);
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+    }
 }
