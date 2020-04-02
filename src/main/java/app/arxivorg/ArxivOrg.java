@@ -16,35 +16,14 @@ import java.util.Optional;
 
 public class ArxivOrg extends Application {
 
-    @FXML
-    private Button downloadButton ;
-
-    // Afficher la boite de dialogue de téléchargement
-    private void showDialogueWin (){
-        String [] choices = {"Article sélectionné", "Tout les articles"};
-        ChoiceDialog<String> cDial = new ChoiceDialog<>(choices[0], choices);
-        cDial.setTitle("Téléchargement");
-        cDial.setHeaderText("Sélectionner votre choix :");
-        cDial.setContentText("Choix : ");
-
-        Optional<String> selection = cDial.showAndWait();
-        selection.ifPresent(str -> System.out.println("Selection" + str));
-    }
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/app/arxivorg/view/Main.fxml"));
-        primaryStage.setTitle("Main Application");
+        Parent root = FXMLLoader.load(getClass().getResource("/app/arxivorg/view/arxivorg.fxml"));
+        primaryStage.setTitle("ArxivOrg");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-//        downloadButton.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                showDialogueWin();
-//            }
-//        });
     }
 
     public static void main(String[] args) { launch(args); }
