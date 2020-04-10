@@ -1,5 +1,6 @@
 package app.arxivorg.controller;
 import app.arxivorg.model.Article;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,8 +8,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.util.Duration;
 
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -50,10 +55,26 @@ public class ArxivOrgController implements Initializable {
 //                System.out.println("Clicked " + nClicks + " times.");
 //            });
         // 2m test : je clique => j'affiche la liste d'articles (que par la suite on va la télécharger)
-        downloadButton.setOnAction(event -> {
-            System.out.println("la liste d article : " + Article.infos);
-        });
+//            downloadButton.setOnAction(event -> {
+//                System.out.println("la liste d article : " + Article.infos);
+//            });
 
+        // optionnel : ajouter effet cliqué / style button .... à la fin
+
+        // 3m test : je clique je télécharge cette liste d article
+            downloadButton.setOnAction(event -> {
+                try (BufferedInputStream inputStream = new BufferedInputStream(new URL("https://arxiv.org/abs/2003.04195v1").openStream());
+                     FileOutputStream fileOS = new FileOutputStream("C:\\Users\\chahi\\Downloads\\articles.pdf")) {
+                    byte data[] = new byte[1024];
+                    int byteContent;
+                    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
+                        fileOS.write(data, 0, byteContent);
+                    }
+                } catch (IOException e) {
+                    // handles IO exceptions
+                }
+
+            });
     }
 
 }
