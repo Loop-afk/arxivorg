@@ -41,13 +41,17 @@ public class ArxivOrgController implements Initializable {
     @FXML
     private void downloadArticles (){
         /*
-            si je clique sur le bouton
-            => alors je télécharge les articles (sous formes PDF)
+            si je clique sur le bouton 'Télécharger'
+            => alors je télécharge les articles (sous format PDF)
         */
         //  1er test : je clique => j'affiche un msg combien de fois j'ai cliqué :
+//            downloadButton.setOnAction(event -> {
+//                nClicks++;
+//                System.out.println("Clicked " + nClicks + " times.");
+//            });
+        // 2m test : je clique => j'affiche la liste d'articles (que par la suite on va la télécharger)
         downloadButton.setOnAction(event -> {
-            nClicks++;
-            System.out.println("Clicked " + nClicks + " times.");
+            System.out.println("la liste d article : " + Article.infos);
         });
 
     }
