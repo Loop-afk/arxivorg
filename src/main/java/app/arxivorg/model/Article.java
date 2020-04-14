@@ -226,7 +226,7 @@ public class Article extends Authors {
             @Override
             public int compare(Article a1, Article a2) {
                 try {
-                    return df.parse(a1.getDateOfPublication()).compareTo(df.parse(a2.getDateOfPublication()));
+                    return df.parse(a2.getDateOfPublication()).compareTo(df.parse(a1.getDateOfPublication()));
                 } catch (ParseException e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -241,21 +241,12 @@ public class Article extends Authors {
             @Override
             public int compare(Article a1, Article a2) {
                 try {
-                    return df.parse(a1.getDateOfUpdate()).compareTo(df.parse(a2.getDateOfUpdate()));
+                    return df.parse(a2.getDateOfUpdate()).compareTo(df.parse(a1.getDateOfUpdate()));
                 } catch (ParseException e) {
                     throw new IllegalArgumentException(e);
                 }
             }
         });
-    }
-
-    public static Article getArticleByID(LinkedList<Article> listOfArticle, String id) {
-        for (Article article : listOfArticle) {
-            if (article.getId().contains(id)) {
-                return article;
-            }
-        }
-        return null;
     }
 
     public static Authors getAllAuthors(LinkedList<Article> listOfArticle) {
@@ -291,6 +282,16 @@ public class Article extends Authors {
         return allCategories;
     }
 
+    //Attention l'ID doit être de forme "xxxx.xxxxx" .
+    public static Article filteredByID(LinkedList<Article> listOfArticle, String id) {
+        for (Article article : listOfArticle) {
+            if (article.getId().contains(id)) {
+                return article;
+            }
+        }
+        return null;
+    }
+
     public static String[] toArray(String authors, String delimiter) {
         return authors.split(delimiter);
     }
@@ -308,10 +309,14 @@ public class Article extends Authors {
         return filteredListByAuthors;
     }
 
+    /*TODO: Faire attention car l'API d'ArXiv est un peu bizarre, elle fait des recherches directement dans tous l'article.
+        Par exemple si on recherche "proteins" on obtient un article qui ne contient pas le mot proteins dans son titre ou son
+        résumé mais seulement dans le texte de l'article. Donc mieux de chercher au singulier car plus général.
+     */
     public static LinkedList<Article> filteredByKeyword(LinkedList<Article> listOfArticle, String keyword) {
         LinkedList<Article> filteredListByKeyword = new LinkedList<>();
         for (Article article : listOfArticle) {
-            if (article.getSummary().toLowerCase().contains(keyword.toLowerCase()) || article.getTitle().toLowerCase().contains(keyword.toLowerCase()) || article.getComment().toLowerCase().contains(keyword.toLowerCase())) {
+            if (article.getSummary().toLowerCase().contains(keyword.toLowerCase()) || article.getTitle().toLowerCase().contains(keyword.toLowerCase()) || article.getComment()!= null && article.getComment().toLowerCase().contains(keyword.toLowerCase())) {
                 filteredListByKeyword.addLast(article);
             }
         }
@@ -352,6 +357,7 @@ public class Article extends Authors {
             .version(HttpClient.Version.HTTP_2)
             .build();
 
+    //TODO: Faire de nouvelles fonctions ou compléter ces fonctions pour qu'elles puissent faire OR/AND/ANDNOT.
     public static String getArticlesFromArXivWithLimitedNumber(String search, int numberMaxOfArticles) throws Exception {
         String[] searchWords = toArray(search,",");
         StringBuilder URItoGet = new StringBuilder("http://export.arxiv.org/api/query?search_query=all:");
@@ -360,7 +366,7 @@ public class Article extends Authors {
             if (i == 0) {
                 URItoGet.append(searchWords[i].trim().toLowerCase());
             } else {
-                URItoGet.append("+AND+all:").append(searchWords[i].trim().toLowerCase());
+                URItoGet.append("+OR+all:").append(searchWords[i].trim().toLowerCase());
             }
         }
         HttpRequest request = HttpRequest.newBuilder()
@@ -373,6 +379,7 @@ public class Article extends Authors {
         return response.body();
     }
 
+    //TODO: Faire attention car de base dans l'API ne rend que 10 articles au maximum. Peut-être passsé la limite à 100 de base?
     public static String getArticlesFromArXiv(String search) throws Exception {
         String[] searchWords = toArray(search, ",");
         StringBuilder URItoGet = new StringBuilder("http://export.arxiv.org/api/query?search_query=all:");
@@ -381,7 +388,7 @@ public class Article extends Authors {
             if (i == 0) {
                 URItoGet.append(searchWords[i].trim().toLowerCase());
             } else {
-                URItoGet.append("+AND+all:").append(searchWords[i].trim().toLowerCase());
+                URItoGet.append("+OR+all:").append(searchWords[i].trim().toLowerCase());
             }
         }
 

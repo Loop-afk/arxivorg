@@ -6,13 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
-import static app.arxivorg.model.Article.readFile;
-import static app.arxivorg.model.Article.toDate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static app.arxivorg.model.Article.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ArticleTest {
-    LinkedList<Article> test = readFile("verySmallTest.atom");
+    //Correspond entre autre au fichier verySmallTest.atom avec les 2 articles : ReZero et Multi-SimLex. Attention readFile ajoute dans l'ordre inverse de rencontre.
+    LinkedList<Article> test = readFile(Article.getArticlesFromArXiv("Multi-SimLex, ReZero"));
     Article article = test.get(0);
+
+    public ArticleTest() throws Exception {
+    }
 
     @Test
     public void testParsing() throws ParseException {
@@ -66,12 +69,14 @@ public class ArticleTest {
         assertEquals(testCopy.get(0),test.get(0));
         assertEquals(testCopy.get(1), test.get(1));
 
-        LinkedList<Article> testCopy2 = test;
-        assertEquals(testCopy2.get(0),test.get(0));
-        assertEquals(testCopy2.get(1), test.get(1));
-        Article.sortByDateOfPublication(testCopy);
-        assertEquals(testCopy.get(1),test.get(0));
-        assertEquals(testCopy.get(0), test.get(1));
+        LinkedList<Article> testCopy2 = new LinkedList<>();
+        testCopy2.add(test.get(1));
+        testCopy2.add(test.get(0));
+        assertEquals(testCopy2.get(0),test.get(1));
+        assertEquals(testCopy2.get(1), test.get(0));
+        Article.sortByDateOfUpdate(testCopy);
+        assertEquals(testCopy.get(0),test.get(0));
+        assertEquals(testCopy.get(1), test.get(1));
     }
 
     @Test
@@ -81,22 +86,31 @@ public class ArticleTest {
         assertEquals(allAuthors,test.get(0).getAuthor().toString()+ ", "+ test.get(1).getAuthor().toString());
     }
 
+    @Test
+    public void testGetAllCategories(){
+        String allCategories = "[cs.LG, cs.CL, stat.ML]";
+        assertEquals(allCategories, Article.getAllCategories(test).toString());
+    }
 
     @Test
     public void testFilters() throws ParseException {
         LinkedList<Article> filterTest1 = new LinkedList<>();
-        filterTest1.add(test.get(0));
-        assertEquals(filterTest1,Article.filteredByKeyword(test,"deep"));
+        filterTest1.add(test.get(1));
+        assertEquals(filterTest1.get(0), Article.filteredByID(test, "2003.04866"));
 
         LinkedList<Article> filterTest2 = new LinkedList<>();
-        filterTest2.add(test.get(1));
-        assertEquals(filterTest2, Article.filteredByAuthors(test, Article.toArray("Eden Bar, Kelly Wing", ",")));
+        filterTest2.add(test.get(0));
+        assertEquals(filterTest2, Article.filteredByKeyword(test,"deep"));
 
         LinkedList<Article> filterTest3 = new LinkedList<>();
-        filterTest3.add(test.get(0));
+        filterTest3.add(test.get(1));
+        assertEquals(filterTest3, Article.filteredByAuthors(test, Article.toArray("Eden Bar, Kelly Wing", ",")));
+
+        LinkedList<Article> filterTest4 = new LinkedList<>();
+        filterTest4.add(test.get(0));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
         Date dateUpdated = sdf.parse("2020-03-10 17:20:00");
-        assertEquals(filterTest3,Article.filterByDateOfUpdate(test,dateUpdated));
+        assertEquals(filterTest4, Article.filterByDateOfUpdate(test,dateUpdated));
 
 
         Date datePublication = sdf.parse("2020-03-10 17:10:00");
@@ -106,7 +120,26 @@ public class ArticleTest {
     }
 
     @Test
-    public void testAPIRequest() {
+    public void testAPIRequest() throws Exception {
+        LinkedList<Article> testElectron = readFile(getArticlesFromArXivWithLimitedNumber("electron",5));
+        assertEquals(5, testElectron.size());
+        LinkedList<Article> testElectronCopy = Article.filteredByKeyword(testElectron,"electron");
+        assertEquals(testElectronCopy,testElectron);
+        Article.sortByDateOfPublication(testElectron);
+        for(int i = 0; i<testElectron.size()-1; i++){
+            assertTrue(Article.toDate(testElectron.get(i).getDateOfPublication()).after(Article.toDate(testElectron.get(i+1).getDateOfPublication())));
+        }
 
+        LinkedList<Article> testProteins = readFile(getArticlesFromArXiv("protein"));
+        assertEquals(10, testProteins.size());
+        LinkedList<Article> testProteinsCopy = Article.filteredByKeyword(testProteins,"protein");
+        assertEquals(testProteinsCopy,testProteins);
+        LinkedList<Article> testProteinsCopy2 = Article.filteredByKeyword(testElectron,"gliehgm");
+        assertEquals(testProteinsCopy2, new LinkedList<>());
+    }
+
+    @Test
+    public void testDownload() {
+        //TODO: Comment tester le bon fonctionnement du téléchargement?
     }
 }
