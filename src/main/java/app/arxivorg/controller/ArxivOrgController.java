@@ -45,25 +45,16 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     private void downloadArticles (){
-        /*
-            si je clique sur le bouton 'Télécharger'
-            => alors je télécharge les articles (sous format PDF)
-        */
-        //  1er test : je clique => j'affiche un msg combien de fois j'ai cliqué :
-//            downloadButton.setOnAction(event -> {
-//                nClicks++;
-//                System.out.println("Clicked " + nClicks + " times.");
-//            });
+
         // 2m test : je clique => j'affiche la liste d'articles (que par la suite on va la télécharger)
 //            downloadButton.setOnAction(event -> {
 //                System.out.println("la liste d article : " + Article.infos);
 //            });
 
-        // optionnel : ajouter effet cliqué / style button .... à la fin
+        // 3m test : je télécharge la liste
 
-        // 3m test : je clique je télécharge cette liste d article
             downloadButton.setOnAction(event -> {
-                try (BufferedInputStream inputStream = new BufferedInputStream(new URL("https://arxiv.org/abs/2003.04195v1").openStream());
+                try (BufferedInputStream inputStream = new BufferedInputStream(new URL("https://arxiv.org/pdf/2003.04748.pdf").openStream());
                      FileOutputStream fileOS = new FileOutputStream("C:\\Users\\chahi\\Downloads\\articles.pdf")) {
                     byte data[] = new byte[1024];
                     int byteContent;
