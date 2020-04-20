@@ -13,15 +13,16 @@ public class ArxivOrgCLI extends Article {
         System.out.println("Input your command: ");
         Scanner scanner = new Scanner(System.in);
         String expression = scanner.next();
-
+        while(scanner.hasNext())
+        {
+            expression = scanner.next();
         switch (expression){
             case "list":
                 System.out.println(getArticlesFromArXivWithLimitedNumber("java", 2));
-                scanner.next();
+                break;
             case "-c":
                 System.out.println(getAllCategories(listOfArticle));
-                if(scanner.hasNextLine()){scanner.next();}
-                else break;
+                break;
             case "-a":
                 System.out.println(getAllAuthors(listOfArticle));
                 break;
@@ -31,7 +32,8 @@ public class ArxivOrgCLI extends Article {
                 break;
 
         }
-        scanner.nextLine();
+        }
         scanner.close();
+
     }
 }
