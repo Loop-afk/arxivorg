@@ -15,12 +15,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class ArxivOrgController implements Initializable {
 
@@ -83,5 +83,24 @@ public class ArxivOrgController implements Initializable {
 
             });
     }
+    // télécharger les catégories d'un fichier a un ressource
+    private static Set<String> loadCategories(){
+        Set<String> result= new HashSet<>();
+        File file = new File("src/main/resources/categories.txt");
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String category = "";
+            while ((category = bufferedReader.readLine()) != null){
+                result.add(category);
+            }
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return result;
+        }
+    }
+
 
 }
