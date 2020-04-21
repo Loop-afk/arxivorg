@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
@@ -23,9 +24,11 @@ import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
 
+    @FXML private ListView<String> listView;
     @FXML private ListView<Article> shortListView;
     @FXML private ComboBox<String> cbxCategories;
     @FXML private Button downloadButton ;
+    @FXML private TextField showDetailsField ;
 
     ObservableList<Article> names = FXCollections.observableArrayList(Article.infos);
 
@@ -40,8 +43,19 @@ public class ArxivOrgController implements Initializable {
     private void setShortListView(){
         shortListView.refresh();
         shortListView.getItems().addAll(names);
-        shortListView.addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> System.out.println(names));
+        shortListView.addEventFilter(MouseEvent.MOUSE_PRESSED,
+                    mouseEvent ->
+                            showDetailsField.setText("&"));
     }
+
+
+//    @FXML
+//    public void displaySelected(MouseEvent mouseEvent) {
+//        int index = listView.getSelectionModel().getSelectedIndex();
+//        Article article =  Article.getArticleByID().get(index);
+//        showDetailsField.setText("Title: "+article.getTitle()+"\nAuteurs: "+ article.getAuthor()
+//                +"\nDescription: \n"+article.getSummary()+"\nLien: "+article.getId());
+//    }
 
     @FXML
     private void setCbxCategories(){

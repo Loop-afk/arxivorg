@@ -57,7 +57,7 @@
                 </Label>
                 <Pane prefHeight="193.0" prefWidth="749.0">
                     <children>
-                        <TextField layoutY="6.0" prefHeight="187.0" prefWidth="749.0" text="INFO : ICI ON AFFICHE LES DÉTAILS DE CHAQUE ARTICLE SELECTIONNE (ID , TITRE, AUTEUR, RESUME)" />
+                        <TextField fx:id="showDetailsField" layoutY="6.0" prefHeight="187.0" prefWidth="749.0" text="INFO : ICI ON AFFICHE LES DÉTAILS DE CHAQUE ARTICLE SELECTIONNE (ID , TITRE, AUTEUR, RESUME)" />
                         <Button layoutX="652.0" layoutY="-23.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="96.0" text="Favoris">
                             <font>
                                 <Font size="15.0" />

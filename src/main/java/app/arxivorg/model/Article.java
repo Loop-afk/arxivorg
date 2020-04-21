@@ -208,9 +208,10 @@ public class Article extends Authors {
 
     @Override
     public String toString() {
-        String message = "id " + getId() + "\n Title: " + getTitle() + "\n Author " + getAuthor();
+        String message = "id " + getId() + "\n Title: " + getTitle() + "\n Author: " + getAuthor();
         return message;
     }
+
 
     public static Date toDate(String stringDate) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
@@ -255,6 +256,15 @@ public class Article extends Authors {
         }
         return null;
     }
+
+//    public static Article getArticles(LinkedList<Article> listOfArticle, String id) {
+//        for (Article article : listOfArticle) {
+//            if (article.getId().contains(id)) {
+//                return article;
+//            }
+//        }
+//        return null;
+//    }
 
     public static Authors getAllAuthors(LinkedList<Article> listOfArticle) {
         Authors allAuthors = new Authors();
