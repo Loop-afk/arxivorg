@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
-
 import java.io.*;
 import java.net.URL;
 import java.nio.file.*;
@@ -37,7 +36,6 @@ public class ArxivOrgController implements Initializable {
         setShortListView();
         setCbxCategories();
         downloadArticles();
-       // showInfosArticles();
     }
 
     @FXML
@@ -46,17 +44,16 @@ public class ArxivOrgController implements Initializable {
         shortListView.getItems().addAll(names);
         shortListView.addEventFilter(MouseEvent.MOUSE_PRESSED,
                     mouseEvent ->
-                            showDetailsField.setText("&"));
+                            showDetailsField.setText("test"));
     }
 
-
 //    @FXML
-//    public void displaySelected(MouseEvent mouseEvent) {
-//        int index = listView.getSelectionModel().getSelectedIndex();
-//        Article article =  Article.getArticleByID().get(index);
-//        showDetailsField.setText("Title: "+article.getTitle()+"\nAuteurs: "+ article.getAuthor()
-//                +"\nDescription: \n"+article.getSummary()+"\nLien: "+article.getId());
-//    }
+////    public void displaySelected(MouseEvent mouseEvent) {
+////        int index = listView.getSelectionModel().getSelectedIndex();
+////        Article article = Article.getArticles().get(index);
+////        showDetailsField.setText("Title: "+article.getTitle()+"\nAuteurs: "+ article.getAuthor()
+////                +"\nDescription: \n"+article.getSummary()+"\nLien: "+article.getId());
+////    }
 
     @FXML
     private void setCbxCategories(){
@@ -84,6 +81,7 @@ public class ArxivOrgController implements Initializable {
 
             });
     }
+
     // télécharger les catégories d'un fichier a un ressource
     private static Set<String> loadCategories(){
         Set<String> result= new HashSet<>();

@@ -39,6 +39,8 @@ public class Article extends Authors {
     String linkOfArticlePDF;
     public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
 
+    private static List<Article> articles;
+
     public Article() {
         authors = new Authors();
     }
@@ -248,6 +250,15 @@ public class Article extends Authors {
         });
     }
 
+    // add new method getArticles
+    /**
+     * @return
+     */
+    public static List<Article> getArticles(){
+        return articles;
+    }
+
+
     public static Article getArticleByID(LinkedList<Article> listOfArticle, String id) {
         for (Article article : listOfArticle) {
             if (article.getId().contains(id)) {
@@ -256,15 +267,6 @@ public class Article extends Authors {
         }
         return null;
     }
-
-//    public static Article getArticles(LinkedList<Article> listOfArticle, String id) {
-//        for (Article article : listOfArticle) {
-//            if (article.getId().contains(id)) {
-//                return article;
-//            }
-//        }
-//        return null;
-//    }
 
     public static Authors getAllAuthors(LinkedList<Article> listOfArticle) {
         Authors allAuthors = new Authors();
