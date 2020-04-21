@@ -38,7 +38,6 @@ public class Article extends Authors {
     List<String> categories;
     String linkOfArticle;
     String linkOfArticlePDF;
-    public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
 
     private static List<Article> articles;
 
@@ -213,8 +212,7 @@ public class Article extends Authors {
 
     @Override
     public String toString() {
-        String message = "id " + getId() + "\n Title: " + getTitle() + "\n Author: " + getAuthor();
-        return message;
+        return "id " + getId() + "\n Title: " + getTitle() + "\n Author: " + getAuthor();
     }
 
 

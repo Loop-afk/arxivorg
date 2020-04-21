@@ -7,10 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
@@ -30,7 +28,13 @@ public class ArxivOrgController implements Initializable {
     @FXML private Button downloadButton ;
     @FXML private TextField showDetailsField ;
 
-    ObservableList<Article> names = FXCollections.observableArrayList(Article.infos);
+    private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("impact, electron",100)));
+
+    ObservableList<Article> names = FXCollections.observableArrayList(infos);
+
+    public ArxivOrgController() throws Exception {
+    }
+
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
         setShortListView();
@@ -41,10 +45,10 @@ public class ArxivOrgController implements Initializable {
     @FXML
     private void setShortListView(){
         shortListView.refresh();
-        shortListView.getItems().addAll(names);
-        shortListView.addEventFilter(MouseEvent.MOUSE_PRESSED,
-                    mouseEvent ->
-                            showDetailsField.setText("test"));
+        shortListView.setItems(names);
+        shortListView.setOnMouseClicked((MouseEvent e) -> {
+            showDetailsField.setText(shortListView.getSelectionModel().getSelectedItem().getSummary());
+        });
     }
 
 //    @FXML
@@ -57,7 +61,13 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     private void setCbxCategories(){
-        cbxCategories.getItems().addAll(Article.getAllCategories(Article.infos));
+       cbxCategories.getItems().addAll(Article.getAllCategories(infos));
+        cbxCategories.setOnAction(
+                (ActionEvent e) -> {
+                    names.clear();
+                    shortListView.refresh();
+                    shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));
+        });
     }
 
     @FXML
