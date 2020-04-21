@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.NodeIterator;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -135,8 +136,8 @@ public class Article extends Authors {
         try {
             builder = factory.newDocumentBuilder();
             //TODO:Regarder pour corriger les exceptions que ça lance.
-            //Document document = builder.parse(new InputSource(new StringReader(file)));
-            Document document = builder.parse(file);
+            Document document = builder.parse(new InputSource(new StringReader(file)));
+            //Document document = builder.parse(file);
 
             DocumentTraversal traversal = (DocumentTraversal) document;
             NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
@@ -180,7 +181,7 @@ public class Article extends Authors {
 
                         if (nodeList.item(i).getNodeName().contains("summary")) {
                             //TODO:Essayer de mieux placer les retours à la ligne pour qu'ils correspondent à la limite de la fenêtre.
-                            article.setSummary(nodeList.item(i).getTextContent()/*.replace("\n", " ")*/);
+                            article.setSummary(nodeList.item(i).getTextContent().trim()/*.replace("\n", " ")*/);
                         }
 
                         if (nodeList.item(i).getNodeName().contains("arxiv:comment")) {
@@ -188,8 +189,10 @@ public class Article extends Authors {
                         }
 
                         if (nodeList.item(i).getNodeName().contains("arxiv:primary_category") || nodeList.item(i).getNodeName().contains("category")) {
-                            categories.add(nodeList.item(i).getAttributes().getNamedItem("term").getTextContent());
-                            article.setCategory(categories);
+                            if (!categories.contains(nodeList.item(i).getAttributes().getNamedItem("term").getTextContent())) {
+                                categories.add(nodeList.item(i).getAttributes().getNamedItem("term").getTextContent());
+                                article.setCategory(categories);
+                            }
                         }
 
                         if (nodeList.item(i).getNodeName().contains("link")) {
@@ -227,7 +230,7 @@ public class Article extends Authors {
             @Override
             public int compare(Article a1, Article a2) {
                 try {
-                    return df.parse(a1.getDateOfPublication()).compareTo(df.parse(a2.getDateOfPublication()));
+                    return df.parse(a2.getDateOfPublication()).compareTo(df.parse(a1.getDateOfPublication()));
                 } catch (ParseException e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -242,7 +245,7 @@ public class Article extends Authors {
             @Override
             public int compare(Article a1, Article a2) {
                 try {
-                    return df.parse(a1.getDateOfUpdate()).compareTo(df.parse(a2.getDateOfUpdate()));
+                    return df.parse(a2.getDateOfUpdate()).compareTo(df.parse(a1.getDateOfUpdate()));
                 } catch (ParseException e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -270,12 +273,21 @@ public class Article extends Authors {
 
     public static Authors getAllAuthors(LinkedList<Article> listOfArticle) {
         Authors allAuthors = new Authors();
-        for (Article article : listOfArticle) {
-            for (String author : article.getAuthor().getData()) {
-                if (!allAuthors.getData().contains(author)) {
-                    allAuthors.getData().add(author);
+
+        for (int i = 0; i <listOfArticle.size();i++) {
+            Article currentArticle = listOfArticle.get(i);
+            for (int j = 0; j < currentArticle.getAuthor().getData().size(); j++){
+                String currentAuthor = currentArticle.getAuthor().getData().get(j);
+
+                if (j == currentArticle.getAuthor().getData().size()-1 && i != listOfArticle.size()-1 && !allAuthors.getData().contains(currentAuthor)){
+                    allAuthors.getData().add(currentAuthor);
+                }
+
+                else if (!allAuthors.getData().contains(currentAuthor)) {
+                    allAuthors.getData().add(currentAuthor);
                 }
             }
+
         }
         return allAuthors;
     }
@@ -292,15 +304,26 @@ public class Article extends Authors {
         return allCategories;
     }
 
-    public static String[] toArray(String authors) {
-        return authors.split(",");
+    //Attention l'ID doit être de forme "xxxx.xxxxx" .
+    public static Article filteredByID(LinkedList<Article> listOfArticle, String id) {
+        for (Article article : listOfArticle) {
+            if (article.getId().contains(id)) {
+                return article;
+            }
+        }
+        return null;
     }
 
-    public static LinkedList<Article> filteredByByAuthors(LinkedList<Article> listOfArticle, String[] authors) {
+    public static String[] toArray(String authors, String delimiter) {
+        return authors.split(delimiter);
+    }
+
+    public static LinkedList<Article> filteredByAuthors(LinkedList<Article> listOfArticle, String[] authors) {
         LinkedList<Article> filteredListByAuthors = new LinkedList<>();
-        for (Article article : listOfArticle) {
-            for (String author : authors) {
-                if (article.getAuthor().getData().contains(author)) {
+        for (String author : authors) {
+            author = author.trim();
+            for (Article article : listOfArticle) {
+                if (article.getAuthor().getData().contains(author) && !filteredListByAuthors.contains(article)) {
                     filteredListByAuthors.addLast(article);
                 }
             }
@@ -308,10 +331,14 @@ public class Article extends Authors {
         return filteredListByAuthors;
     }
 
+    /*TODO: Faire attention car l'API d'ArXiv est un peu bizarre, elle fait des recherches directement dans tous l'article.
+        Par exemple si on recherche "proteins" on obtient un article qui ne contient pas le mot proteins dans son titre ou son
+        résumé mais seulement dans le texte de l'article. Donc mieux de chercher au singulier car plus général.
+     */
     public static LinkedList<Article> filteredByKeyword(LinkedList<Article> listOfArticle, String keyword) {
         LinkedList<Article> filteredListByKeyword = new LinkedList<>();
         for (Article article : listOfArticle) {
-            if (article.getSummary().toLowerCase().contains(keyword.toLowerCase()) || article.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+            if (article.getSummary().toLowerCase().contains(keyword.toLowerCase()) || article.getTitle().toLowerCase().contains(keyword.toLowerCase()) || article.getComment()!= null && article.getComment().toLowerCase().contains(keyword.toLowerCase())) {
                 filteredListByKeyword.addLast(article);
             }
         }
@@ -352,15 +379,16 @@ public class Article extends Authors {
             .version(HttpClient.Version.HTTP_2)
             .build();
 
+    //TODO: Faire de nouvelles fonctions ou compléter ces fonctions pour qu'elles puissent faire OR/AND/ANDNOT.
     public static String getArticlesFromArXivWithLimitedNumber(String search, int numberMaxOfArticles) throws Exception {
-        String[] searchWords = toArray(search);
-        String URItoGet = "http://export.arxiv.org/api/query?search_query=all:";
+        String[] searchWords = toArray(search,",");
+        StringBuilder URItoGet = new StringBuilder("http://export.arxiv.org/api/query?search_query=all:");
 
         for (int i = 0; i < searchWords.length; i++) {
             if (i == 0) {
-                URItoGet += searchWords[i].trim().toLowerCase();
+                URItoGet.append(searchWords[i].trim().toLowerCase());
             } else {
-                URItoGet += "+AND+all:" + searchWords[i].trim().toLowerCase();
+                URItoGet.append("+OR+all:").append(searchWords[i].trim().toLowerCase());
             }
         }
         HttpRequest request = HttpRequest.newBuilder()
@@ -373,21 +401,22 @@ public class Article extends Authors {
         return response.body();
     }
 
+    //TODO: Faire attention car de base dans l'API ne rend que 10 articles au maximum. Peut-être passsé la limite à 100 de base?
     public static String getArticlesFromArXiv(String search) throws Exception {
-        String[] searchWords = toArray(search);
-        String URItoGet = "http://export.arxiv.org/api/query?search_query=all:";
+        String[] searchWords = toArray(search, ",");
+        StringBuilder URItoGet = new StringBuilder("http://export.arxiv.org/api/query?search_query=all:");
 
         for (int i = 0; i < searchWords.length; i++) {
             if (i == 0) {
-                URItoGet += searchWords[i].trim().toLowerCase();
+                URItoGet.append(searchWords[i].trim().toLowerCase());
             } else {
-                URItoGet += "+AND+all:" + searchWords[i].trim().toLowerCase();
+                URItoGet.append("+OR+all:").append(searchWords[i].trim().toLowerCase());
             }
         }
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(URItoGet))
+                .uri(URI.create(URItoGet.toString()))
                 .setHeader("User-Agent", "Java 11 HttpClient Bot")
                 .build();
 
