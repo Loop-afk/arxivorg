@@ -17,6 +17,7 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.*;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -101,6 +102,49 @@ public class ArxivOrgController implements Initializable {
             return result;
         }
     }
+
+    private static void downloadArticleToPDF(Article article){
+        try {
+            String link1=article.getId().replace("abs","pdf");
+            String link2=link1.replace("http", "https");
+            URL url = new URL(link2);
+
+            InputStream in = url.openStream();
+            Path path1 = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/Documents/", "arxivorg");
+            Files.createDirectories(path1);
+            String[] tab=article.getId().split("/");
+            String fineName=tab[tab.length-1];
+            Path path2= Paths.get(path1.toString().concat("/"+fineName+".pdf"));
+            Files.copy(in, path2, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
