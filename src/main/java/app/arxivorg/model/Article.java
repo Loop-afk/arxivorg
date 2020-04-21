@@ -40,6 +40,8 @@ public class Article extends Authors {
     String linkOfArticlePDF;
     public static LinkedList<Article> infos = new LinkedList<>(readFile("test.atom"));
 
+    private static List<Article> articles;
+
     public Article() {
         authors = new Authors();
     }
@@ -211,8 +213,10 @@ public class Article extends Authors {
 
     @Override
     public String toString() {
-        return "id " + getId() + "\n Title: " + getTitle() + "\n Author " + getAuthor();
+        String message = "id " + getId() + "\n Title: " + getTitle() + "\n Author: " + getAuthor();
+        return message;
     }
+
 
     public static Date toDate(String stringDate) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
@@ -247,6 +251,24 @@ public class Article extends Authors {
                 }
             }
         });
+    }
+
+    // add new method getArticles
+    /**
+     * @return
+     */
+    public static List<Article> getArticles(){
+        return articles;
+    }
+
+
+    public static Article getArticleByID(LinkedList<Article> listOfArticle, String id) {
+        for (Article article : listOfArticle) {
+            if (article.getId().contains(id)) {
+                return article;
+            }
+        }
+        return null;
     }
 
     public static Authors getAllAuthors(LinkedList<Article> listOfArticle) {

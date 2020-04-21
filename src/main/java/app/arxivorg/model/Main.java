@@ -1,6 +1,7 @@
 package app.arxivorg.model;
+import java.text.ParseException;
 import java.util.LinkedList;
-
+import java.util.List;
 import static app.arxivorg.model.Article.*;
 
 public class Main {
