@@ -251,10 +251,6 @@ public class Article extends Authors {
         });
     }
 
-    // add new method getArticles
-    /**
-     * @return
-     */
     public static List<Article> getArticles(){
         return articles;
     }
@@ -403,7 +399,6 @@ public class Article extends Authors {
     public static String getArticlesFromArXiv(String search) throws Exception {
         String[] searchWords = toArray(search, ",");
         StringBuilder URItoGet = new StringBuilder("http://export.arxiv.org/api/query?search_query=all:");
-
         for (int i = 0; i < searchWords.length; i++) {
             if (i == 0) {
                 URItoGet.append(searchWords[i].trim().toLowerCase());
