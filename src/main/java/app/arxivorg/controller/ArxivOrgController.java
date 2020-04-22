@@ -46,9 +46,11 @@ public class ArxivOrgController implements Initializable {
     private void setShortListView(){
         shortListView.refresh();
         shortListView.setItems(names);
-        shortListView.setOnMouseClicked((MouseEvent e) -> {
-            showDetailsField.setText(shortListView.getSelectionModel().getSelectedItem().getSummary());
-        });
+        shortListView.setOnMouseClicked(
+                (MouseEvent e) -> {
+                    if (!shortListView.getSelectionModel().isEmpty())
+                        showDetailsField.setText(shortListView.getSelectionModel().getSelectedItem().getSummary());
+                });
     }
 
 //    @FXML
