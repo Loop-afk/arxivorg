@@ -66,9 +66,10 @@ public class ArxivOrgController implements Initializable {
        cbxCategories.getItems().addAll(Article.getAllCategories(infos));
         cbxCategories.setOnAction(
                 (ActionEvent e) -> {
-                    names.clear();
-                    shortListView.refresh();
-                    shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));
+                   /* names.clear();
+                    shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));*/
+                    names = FXCollections.observableArrayList(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));
+                    shortListView.setItems(names);
         });
     }
 
