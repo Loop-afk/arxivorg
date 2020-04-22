@@ -49,7 +49,7 @@
         </VBox>
         <VBox layoutX="242.0" layoutY="88.0" prefHeight="630.0" prefWidth="749.0">
             <children>
-                <ListView fx:id="shortListView" prefHeight="411.0" prefWidth="749.0" />
+                <ListView fx:id="shortListView" editable="true" prefHeight="411.0" prefWidth="749.0" />
                 <Label prefHeight="23.0" prefWidth="642.0" text="Information article" textAlignment="CENTER" textFill="#111111" wrapText="true">
                     <font>
                         <Font name="Calibri" size="20.0" />
@@ -57,7 +57,7 @@
                 </Label>
                 <Pane prefHeight="193.0" prefWidth="749.0">
                     <children>
-                        <TextField fx:id="showDetailsField" layoutY="6.0" prefHeight="187.0" prefWidth="749.0" text="INFO : ICI ON AFFICHE LES DÉTAILS DE CHAQUE ARTICLE SELECTIONNE (ID , TITRE, AUTEUR, RESUME)" />
+                        <TextField fx:id="showDetailsField" editable="false" layoutY="6.0" prefHeight="187.0" prefWidth="749.0" text="INFO : ICI, ON RETROUVE LE DETAIL DE CHAQUE ARTICLE" />
                         <Button layoutX="652.0" layoutY="-23.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="96.0" text="Favoris">
                             <font>
                                 <Font size="15.0" />

@@ -8,7 +8,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         LinkedList<Article> list1 = readFile(getArticlesFromArXivWithLimitedNumber("electron, impact",100));
-        System.out.println(list1.size());
+        for(Article list: list1){
+            System.out.println(list.getSummary());
+        }
     }
 }
 
