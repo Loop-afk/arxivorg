@@ -20,6 +20,8 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextField showDetailsField ;
     @FXML private TextField searchByKeyWords;
     @FXML private TextField searchByAuthors;
+    @FXML private CheckBox favoriteCheckBox;
+
 
     private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("java",100)));
 
@@ -139,5 +141,8 @@ public class ArxivOrgController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
+
+
+
 }
 

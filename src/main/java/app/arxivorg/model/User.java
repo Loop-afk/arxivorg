@@ -35,4 +35,5 @@ public class User {
     public void addArticle(Article article){
         this.favoris.addLast(article);
     }
+
 }
