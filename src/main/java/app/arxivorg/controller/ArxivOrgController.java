@@ -7,9 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ArxivOrgController implements Initializable {
 
@@ -58,15 +61,30 @@ public class ArxivOrgController implements Initializable {
 ////    }
 
     @FXML
-    private void setCbxCategories(){
-       cbxCategories.getItems().addAll(Article.getAllCategories(infos));
-        cbxCategories.setOnAction(
-                (ActionEvent e) -> {
+    private void setCbxCategories() {
+        try {
+            Scanner scanner = new Scanner(new File("Categories.txt"));
+            Map<String, String> categories = new LinkedHashMap<>();
+            while (scanner.hasNextLine()) {
+                String[] categorie = scanner.nextLine().split(":", 2);
+                categories.put(categorie[0], categorie[1]);
+            }
+            for (String key : categories.keySet()) {
+                cbxCategories.getItems().addAll(categories.get(key));
+            }
+            cbxCategories.setOnAction(
+                    (ActionEvent e) -> {
+                        for(Map.Entry<String, String> key : categories.entrySet()){
+                            if(key.getValue().contains(cbxCategories.getSelectionModel().getSelectedItem()))
+                                names = FXCollections.observableArrayList(Article.filterByCategory(infos, key.getKey()));
+                        }
+                        shortListView.setItems(names);
                    /* names.clear();
                     shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));*/
-                    names = FXCollections.observableArrayList(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));
-                    shortListView.setItems(names);
-        });
+                    });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
