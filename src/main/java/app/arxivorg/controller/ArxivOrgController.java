@@ -7,10 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.net.URL;
 import java.util.*;
 
@@ -20,13 +18,13 @@ public class ArxivOrgController implements Initializable {
     @FXML private ListView<Article> shortListView;
     @FXML private ComboBox<String> cbxCategories;
     @FXML private Button downloadButton ;
-    @FXML private TextField showDetailsField ;
+    @FXML private TextArea showDetailsField ;
     @FXML private TextField searchByKeyWords;
     @FXML private TextField searchByAuthors;
     @FXML private CheckBox favoriteCheckBox;
 
 
-    private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("java",100)));
+    private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("",100)));
 
     ObservableList<Article> names = FXCollections.observableArrayList(infos);
 
@@ -97,8 +95,24 @@ public class ArxivOrgController implements Initializable {
                         names = FXCollections.observableArrayList(Article.filteredByKeyword(filtered,keyword));
                     } catch (Exception ex) {
                         ex.printStackTrace();
+                        showDetailsField.setText("Mauvais parametres de recherche, il doit etre de la forme suivante (les espaces sont à respecter): mot-cle, mot-cle2, mot-cle3...");
                     }
                     shortListView.setItems(names);
+                });
+    }
+
+    @FXML
+    private void searchByAuthors(){
+        searchByAuthors.setOnAction(
+                (ActionEvent e) -> {
+                    try {
+                        String authors = searchByAuthors.getText();
+                        LinkedList<Article> filtered = new LinkedList<>(Article.readFile(Article.getArticlesFromArXiv(authors)));
+                     //   names = FXCollections.observableArrayList(Article.filteredByAuthors(filtered,authors));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                  //  shortListView.setItems(names);
                 });
     }
 /*
