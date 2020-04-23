@@ -40,9 +40,9 @@
                         <Font size="13.0" />
                      </font></Label>
                         <DatePicker layoutX="26.0" layoutY="114.0" />
-                        <TextField layoutX="84.0" layoutY="184.0" prefHeight="23.0" prefWidth="158.0" promptText="Mots clés, auteurs " />
-                        <Button layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Rechercher" />
-                        <Button fx:id="downloadButton" layoutX="70.0" layoutY="251.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="86.0" style="-fx-border-radius: 12px;" text="Télécharger" />
+                        <TextField id="txt_KeyWords" fx:id="searchByKeyWords" layoutX="34.0" layoutY="219.0" prefHeight="23.0" prefWidth="158.0" promptText="Entrez un mot clé" />
+                        <Button fx:id="downloadButton" layoutX="70.0" layoutY="430.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="86.0" style="-fx-border-radius: 12px;" text="Télécharger" />
+                  <TextField id="txt_Authors" fx:id="searchByAuthors" layoutX="34.0" layoutY="290.0" prefHeight="23.0" prefWidth="158.0" promptText="Recherche par auteurs" />
                     </children>
                 </Pane>
             </children>

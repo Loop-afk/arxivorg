@@ -1,24 +1,15 @@
 package app.arxivorg.controller;
 import app.arxivorg.model.Article;
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Duration;
-
-import java.io.*;
 import java.net.URL;
-import java.nio.file.*;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 public class ArxivOrgController implements Initializable {
 
@@ -27,8 +18,12 @@ public class ArxivOrgController implements Initializable {
     @FXML private ComboBox<String> cbxCategories;
     @FXML private Button downloadButton ;
     @FXML private TextField showDetailsField ;
+    @FXML private TextField searchByKeyWords;
+    @FXML private TextField searchByAuthors;
+    @FXML private CheckBox favoriteCheckBox;
 
-    private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("impact, electron",100)));
+
+    private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("java",100)));
 
     ObservableList<Article> names = FXCollections.observableArrayList(infos);
 
@@ -39,7 +34,8 @@ public class ArxivOrgController implements Initializable {
     public void initialize(URL location, ResourceBundle resourceBundle) {
         setShortListView();
         setCbxCategories();
-        downloadArticles();
+        searchByKeywords();
+      //  downloadArticles();
     }
 
     @FXML
@@ -66,12 +62,28 @@ public class ArxivOrgController implements Initializable {
        cbxCategories.getItems().addAll(Article.getAllCategories(infos));
         cbxCategories.setOnAction(
                 (ActionEvent e) -> {
-                    names.clear();
-                    shortListView.refresh();
-                    shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));
+                   /* names.clear();
+                    shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));*/
+                    names = FXCollections.observableArrayList(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));
+                    shortListView.setItems(names);
         });
     }
 
+    @FXML
+    private void searchByKeywords(){
+        searchByKeyWords.setOnAction(
+                (ActionEvent e) -> {
+                    try {
+                        String keyword = searchByKeyWords.getText();
+                        LinkedList<Article> filtered = new LinkedList<>(Article.readFile(Article.getArticlesFromArXiv(keyword)));
+                        names = FXCollections.observableArrayList(Article.filteredByKeyword(filtered,keyword));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    shortListView.setItems(names);
+                });
+    }
+/*
     @FXML
     private void downloadArticles (){
 
@@ -94,7 +106,7 @@ public class ArxivOrgController implements Initializable {
             });
     }
 
-    // télécharger les catégories d'un fichier a un ressource
+     télécharger les catégories d'un fichier a un ressource
     private static Set<String> loadCategories(){
         Set<String> result= new HashSet<>();
         File file = new File("src/main/resources/categories.txt");
@@ -128,33 +140,9 @@ public class ArxivOrgController implements Initializable {
             Files.copy(in, path2, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }*/
 
 
 
 }
+
