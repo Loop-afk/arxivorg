@@ -10,71 +10,70 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="721.0" minWidth="721.0" pickOnBounds="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController">
-    <children>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="479.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <right>
+      <VBox fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="980.0">
          <children>
-            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="479.0">
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="980.0">
                <children>
-                      <Label cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="23.0" prefWidth="479.0" style="-fx-background-color: #7156BB;" text="Liste d'articles" textAlignment="CENTER" textFill="#fcfafa" wrapText="true">
-                          <font>
-                              <Font name="Calibri" size="20.0" />
-                          </font>
-                          <opaqueInsets>
-                              <Insets />
-                          </opaqueInsets>
-                      </Label>
-                      <ListView fx:id="shortListView" editable="true" layoutY="23.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="377.0" prefWidth="479.0" />
-                      <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="23.0" prefWidth="180.0" text="Information article" textAlignment="CENTER" textFill="#111111" wrapText="true">
-                          <font>
-                              <Font name="Calibri" size="20.0" />
-                          </font>
-                      </Label>
-                  <TextArea fx:id="showDetailsField" editable="false" layoutY="442.0" prefHeight="280.0" prefWidth="479.0" />
-                        <Button alignment="TOP_LEFT" layoutX="389.0" layoutY="404.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="86.0" text="Favoris">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
+                  <ListView fx:id="shortListView" editable="true" layoutY="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="347.0" prefWidth="980.0" />
+                  <Label cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="30.0" prefWidth="980.0" style="-fx-background-color: #7156BB;" text="Liste d'articles" textAlignment="CENTER" textFill="#fcfafa" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="20.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="5.0" layoutY="413.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="23.0" prefWidth="700.0" text="Information article" textAlignment="CENTER" textFill="#111111" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button alignment="TOP_LEFT" layoutX="825.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="32.0" prefWidth="136.0" text="Favoris">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <TextArea fx:id="showDetailsField" disable="true" editable="false" layoutX="5.0" layoutY="436.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="284.0" prefWidth="980.0" text="Résumé de l'article une fois cliqué dessus" />
                </children>
             </Pane>
          </children>
       </VBox>
-        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="242.0" style="-fx-background-color: #3F2B63;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="721.0" prefWidth="242.0">
+   </right>
+   <left>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #3F2B63;" BorderPane.alignment="CENTER">
+         <children>
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="300.0">
                <children>
-                        <ImageView fitHeight="64.0" fitWidth="217.0" layoutX="13.0" layoutY="14.0">
-                            <image>
-                                <Image url="@../../../../../../AMU.png" />
-                            </image>
-                        </ImageView>
-                        <Label layoutX="87.0" layoutY="102.0" prefHeight="29.0" prefWidth="69.0" text="Catégories" textAlignment="CENTER" textFill="#fcf8f8">
+                  <ImageView fitHeight="64.0" fitWidth="217.0" layoutX="13.0" layoutY="14.0">
+                     <image>
+                        <Image url="@../../../../../../AMU.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="87.0" layoutY="102.0" prefHeight="29.0" prefWidth="69.0" text="Catégories" textAlignment="CENTER" textFill="#fcf8f8">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                        <ComboBox id="cbxCategories" fx:id="cbxCategories" layoutX="6.0" layoutY="131.0" prefHeight="29.0" prefWidth="232.0" promptText="Sélectionnez..." />
-                        <Label layoutX="73.0" layoutY="197.0" prefHeight="29.0" prefWidth="96.0" text="Choisir une date" textAlignment="CENTER" textFill="#fcf8f8">
+                  <ComboBox id="cbxCategories" fx:id="cbxCategories" layoutX="6.0" layoutY="131.0" prefHeight="29.0" prefWidth="232.0" promptText="Sélectionnez..." />
+                  <Label layoutX="73.0" layoutY="197.0" prefHeight="29.0" prefWidth="96.0" text="Choisir une date" textAlignment="CENTER" textFill="#fcf8f8">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                        <DatePicker layoutX="20.0" layoutY="226.0" />
-                        <TextField id="txt_KeyWords" fx:id="searchByKeyWords" layoutX="34.0" layoutY="324.0" promptText="Entrez un mot clé" />
+                  <DatePicker layoutX="20.0" layoutY="226.0" />
+                  <TextField id="txt_KeyWords" fx:id="searchByKeyWords" layoutX="34.0" layoutY="324.0" promptText="Entrez un mot clé" />
                   <TextField id="txt_Authors" fx:id="searchByAuthors" layoutX="34.0" layoutY="391.0" promptText="Recherche par auteurs" />
-                        <Button fx:id="downloadButton" layoutX="66.0" layoutY="461.0" mnemonicParsing="false" style="-fx-border-radius: 12px;" text="Télécharger" />
+                  <Button fx:id="downloadButton" layoutX="66.0" layoutY="461.0" mnemonicParsing="false" style="-fx-border-radius: 12px;" text="Télécharger" />
                </children>
-                </Pane>
-            </children>
-         <padding>
-            <Insets right="242.0" />
-         </padding>
-        </VBox>
-    </children>
-</AnchorPane>
+            </Pane>
+         </children>
+      </VBox>
+   </left>
+</BorderPane>
