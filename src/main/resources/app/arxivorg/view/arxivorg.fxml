@@ -10,16 +10,16 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <right>
-      <VBox fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="980.0">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="720.0" minWidth="1280.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController">
+   <children>
+      <VBox layoutX="300.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="980.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="980.0">
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="980.0">
                <children>
                   <ListView fx:id="shortListView" editable="true" layoutY="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="347.0" prefWidth="980.0" />
                   <Label cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="30.0" prefWidth="980.0" style="-fx-background-color: #7156BB;" text="Liste d'articles" textAlignment="CENTER" textFill="#fcfafa" wrapText="true">
@@ -42,12 +42,16 @@
                   </Button>
                   <TextArea fx:id="showDetailsField" disable="true" editable="false" layoutX="5.0" layoutY="436.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="284.0" prefWidth="980.0" text="Résumé de l'article une fois cliqué dessus" />
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Pane>
          </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </VBox>
-   </right>
-   <left>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #3F2B63;" BorderPane.alignment="CENTER">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #3F2B63;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="300.0">
                <children>
@@ -75,5 +79,5 @@
             </Pane>
          </children>
       </VBox>
-   </left>
-</BorderPane>
+   </children>
+</AnchorPane>
