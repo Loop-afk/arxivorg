@@ -150,7 +150,8 @@ public class ArxivOrgController implements Initializable {
                     if (download != null) {
                         try {
                             for(Article articles: shortListView.getSelectionModel().getSelectedItems()){
-                                Article.Download(articles);
+                                new File(download.getPath());
+                                Article.Download(articles, download.getAbsolutePath());
                             }
                         } catch (IOException ex) {
                             ex.printStackTrace();

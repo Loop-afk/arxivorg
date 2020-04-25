@@ -11,7 +11,6 @@ public class Main {
      /*   for(Article list: list1){
             System.out.println(list.getSummary());*/
 
-            Article.Download(list1.get(0));
         }
     }
 
