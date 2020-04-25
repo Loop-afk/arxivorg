@@ -22,7 +22,7 @@
             <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="980.0" VBox.vgrow="ALWAYS">
                <children>
                   <ListView fx:id="shortListView" editable="true" layoutY="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="347.0" prefWidth="980.0" />
-                  <Label cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="30.0" prefWidth="980.0" style="-fx-background-color: #7156BB;" text="Liste d'articles" textAlignment="CENTER" textFill="#fcfafa" wrapText="true">
+                  <Label fx:id="lblList" cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="30.0" prefWidth="980.0" style="-fx-background-color: #7156BB;" text="Liste d'articles" textAlignment="CENTER" textFill="#fcfafa" wrapText="true">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
@@ -41,6 +41,11 @@
                      </font>
                   </Button>
                   <TextArea fx:id="showDetailsField" editable="false" layoutX="5.0" layoutY="436.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="284.0" prefWidth="980.0" text="Résumé de l'article une fois cliqué dessus" />
+                  <Button fx:id="deleteFavoriteButton" alignment="TOP_LEFT" layoutX="825.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="32.0" prefWidth="136.0" text="Supprimer" visible="false">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
                </children>
                <VBox.margin>
                   <Insets />
@@ -55,26 +60,26 @@
          <children>
             <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="300.0">
                <children>
-                  <ImageView fitHeight="64.0" fitWidth="217.0" layoutX="13.0" layoutY="14.0">
+                  <ImageView fitHeight="64.0" fitWidth="217.0" layoutX="42.0" layoutY="14.0">
                      <image>
                         <Image url="@../../../../../../AMU.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="87.0" layoutY="102.0" prefHeight="29.0" prefWidth="69.0" text="Catégories" textAlignment="CENTER" textFill="#fcf8f8">
+                  <Label layoutX="118.0" layoutY="102.0" prefHeight="29.0" prefWidth="69.0" text="Catégories" textAlignment="CENTER" textFill="#fcf8f8">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <ComboBox id="cbxCategories" fx:id="cbxCategories" layoutX="6.0" layoutY="131.0" prefHeight="29.0" prefWidth="232.0" promptText="Sélectionnez..." />
-                  <Label layoutX="73.0" layoutY="197.0" prefHeight="29.0" prefWidth="96.0" text="Choisir une date" textAlignment="CENTER" textFill="#fcf8f8">
+                  <ComboBox id="cbxCategories" fx:id="cbxCategories" layoutX="18.0" layoutY="131.0" prefHeight="29.0" prefWidth="270.0" promptText="Sélectionnez..." />
+                  <Label layoutX="102.0" layoutY="184.0" prefHeight="29.0" prefWidth="96.0" text="Choisir une date" textAlignment="CENTER" textFill="#fcf8f8">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <DatePicker layoutX="20.0" layoutY="226.0" />
-                  <TextField id="txt_KeyWords" fx:id="searchByKeyWords" layoutX="34.0" layoutY="324.0" promptText="Entrez un mot clé" />
-                  <TextField id="txt_Authors" fx:id="searchByAuthors" layoutX="34.0" layoutY="391.0" promptText="Recherche par auteurs" />
-                  <Button fx:id="downloadButton" layoutX="66.0" layoutY="461.0" mnemonicParsing="false" style="-fx-border-radius: 12px;" text="Télécharger" />
+                  <DatePicker layoutX="63.0" layoutY="213.0" />
+                  <TextField id="txt_KeyWords" fx:id="searchByKeyWords" layoutX="77.0" layoutY="279.0" promptText="Entrez un mot clé" />
+                  <TextField id="txt_Authors" fx:id="searchByAuthors" layoutX="75.0" layoutY="347.0" promptText="Recherche par auteurs" />
+                  <Button fx:id="downloadButton" layoutX="110.0" layoutY="415.0" mnemonicParsing="false" style="-fx-border-radius: 12px;" text="Télécharger" />
                </children>
             </Pane>
          </children>

@@ -1,5 +1,4 @@
 package app.arxivorg.controller;
-import app.arxivorg.ArxivOrg;
 import app.arxivorg.model.Article;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,36 +6,36 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ArxivOrgController implements Initializable {
 
     @FXML private ListView<Article> shortListView;
     @FXML private ComboBox<String> cbxCategories;
-    @FXML private Button downloadButton ;
-    @FXML private TextArea showDetailsField ;
+    @FXML private Button downloadButton;
+    @FXML private TextArea showDetailsField;
     @FXML private TextField searchByKeyWords;
     @FXML private TextField searchByAuthors;
     @FXML private VBox vBoxInfos;
     @FXML private Button addFavoriteButton;
+    @FXML private Button deleteFavoriteButton;
+    @FXML private Label lblList;
 
-    private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("",100)));
+    private LinkedList<Article> infos = new LinkedList<>(Article.readFile(Article.getArticlesFromArXivWithLimitedNumber("", 100)));
 
     ObservableList<Article> names = FXCollections.observableArrayList(infos);
+
+    private LinkedList<Article> favoritesArticles = new LinkedList<>();
+
 
     public ArxivOrgController() throws Exception {
     }
@@ -48,9 +47,17 @@ public class ArxivOrgController implements Initializable {
         searchByKeywords();
         searchByAuthors();
         downloadArticles();
+        favoriteManager();
     }
+
     @FXML
-    private void setShortListView(){
+    private void setShortListView() {
+        //Le plus simple était ici à chaque fois qu'on rafraîchit la liste de remodier les labels et les boutons de favoriteManager() afin de permettre
+        // à l'utilisateur de pouvoir ajouter des articles à ses favoris avec sa nouvelle recherche
+        lblList.setText("Liste d'articles");
+        addFavoriteButton.setVisible(true);
+        deleteFavoriteButton.setVisible(false);
+
         shortListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         shortListView.refresh();
         shortListView.setItems(names);
@@ -75,11 +82,11 @@ public class ArxivOrgController implements Initializable {
             }
             cbxCategories.setOnAction(
                     (ActionEvent e) -> {
-                        for(Map.Entry<String, String> key : categories.entrySet()){
-                            if(key.getValue().contains(cbxCategories.getSelectionModel().getSelectedItem()))
+                        for (Map.Entry<String, String> key : categories.entrySet()) {
+                            if (key.getValue().contains(cbxCategories.getSelectionModel().getSelectedItem()))
                                 names = FXCollections.observableArrayList(Article.filterByCategory(infos, key.getKey()));
                         }
-                        shortListView.setItems(names);
+                        setShortListView();
                    /* names.clear();
                     shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));*/
                     });
@@ -89,25 +96,26 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    private void searchByKeywords(){
+    private void searchByKeywords() {
         searchByKeyWords.setOnAction(
                 (ActionEvent e) -> {
                     try {
                         String keyword = searchByKeyWords.getText();
                         LinkedList<Article> filtered = new LinkedList<>(Article.readFile(Article.getArticlesFromArXiv(keyword)));
-                        names = FXCollections.observableArrayList(Article.filteredByKeyword(filtered,keyword));
+                        names = FXCollections.observableArrayList(Article.filteredByKeyword(filtered, keyword));
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         showDetailsField.setText("Mauvais parametres de recherche, il doit etre de la forme suivante (les espaces sont à respecter): mot-cle, mot-cle2, mot-cle3...");
                     }
-                    shortListView.setItems(names);
+                    //shortListView.setItems(names);
+                    setShortListView();
                     searchByAuthors();
 
                 });
     }
 
     @FXML
-    private void searchByAuthors(){
+    private void searchByAuthors() {
 
         //Auto-Complétion des auteurs en fonction de la liste affichée
 /*        System.out.println(!searchByKeyWords.getText().isEmpty());
@@ -133,14 +141,16 @@ public class ArxivOrgController implements Initializable {
                         names = FXCollections.observableArrayList(filtered);
                     } catch (Exception ex) {
 
-                        showDetailsField.setText("La recherche doit se faire de la maniere suivante (les espaces sont a respecter): 'Prenom Nom' \nou bien directement en seprant les noms par une virgule");
+                        showDetailsField.setText("La recherche doit se faire de la maniere suivante (les espaces sont a respecter): 'Prenom Nom' ");
 
                     }
-                    shortListView.setItems(names);
+                    setShortListView();
                 });
     }
+
+
     @FXML
-    private void downloadArticles(){
+    private void downloadArticles() {
         downloadButton.setOnMouseClicked(
                 (MouseEvent e) -> {
                     DirectoryChooser fc = new DirectoryChooser();
@@ -149,7 +159,7 @@ public class ArxivOrgController implements Initializable {
                     File download = fc.showDialog(downloadButton.getScene().getWindow());
                     if (download != null) {
                         try {
-                            for(Article articles: shortListView.getSelectionModel().getSelectedItems()){
+                            for (Article articles : shortListView.getSelectionModel().getSelectedItems()) {
                                 new File(download.getPath());
                                 Article.Download(articles, download.getAbsolutePath());
                             }
@@ -159,25 +169,49 @@ public class ArxivOrgController implements Initializable {
                     }
                 });
     }
-/*
-    private static void downloadArticleToPDF(Article article){
-        try {
-            String link1=article.getId().replace("abs","pdf");
-            String link2=link1.replace("http", "https");
-            URL url = new URL(link2);
 
-            InputStream in = url.openStream();
-            Path path1 = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/Documents/", "arxivorg");
-            Files.createDirectories(path1);
-            String[] tab=article.getId().split("/");
-            String fineName=tab[tab.length-1];
-            Path path2= Paths.get(path1.toString().concat("/"+fineName+".pdf"));
-            Files.copy(in, path2, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+    @FXML
+    private void favoriteManager() {
+        // Fonction qui gère l'ajout et la suppression d'article dans les favoris
+        addFavoriteButton.setOnMouseClicked(
+                (MouseEvent e) -> {
+                    if (!shortListView.getSelectionModel().getSelectedItems().isEmpty()) {
+                        //for(int i = 0; i<= shortListView.getSelectionModel().getSelectedItems().size(); i++)
+                        for(Article favoriteArticle : shortListView.getSelectionModel().getSelectedItems()){
+                            if (!favoritesArticles.toString().contains(favoriteArticle.toString())) {
+                                favoritesArticles.add(favoriteArticle);
+                            System.out.println(favoritesArticles.toString());
+                            }
+                            else
+                            showDetailsField.setText("Article deja present dans la liste des favoris");
+                        }
+                    }
+
+                    if (favoritesArticles.isEmpty()) {
+                        showDetailsField.setText("Ajoutez des articles a vos favoris dans un premier temps");
+                    }
+                    if (!favoritesArticles.isEmpty()){
+                        // Ici je ne rappelle pas la fonction setShortListView car elle me modifierai les boutons + labels que j'ai mis en place plus haut
+                        names = FXCollections.observableArrayList(favoritesArticles);
+                        shortListView.setItems(names);
+                        lblList.setText("Liste d'articles Favoris");
+                        addFavoriteButton.setVisible(false);
+                        deleteFavoriteButton.setVisible(true);
+                    }
+                    });
 
 
+        deleteFavoriteButton.setOnAction(
+                (ActionEvent e) -> {
+                    if (!shortListView.getSelectionModel().getSelectedItems().isEmpty() && favoritesArticles != null) {
+                        for (Article deleteFromFavorite : favoritesArticles) {
+                            favoritesArticles.remove(deleteFromFavorite);
+                        }
+                    }
+                    names = FXCollections.observableArrayList(favoritesArticles);
+                    shortListView.setItems(names);
+                });
+    }
 
 }
 
