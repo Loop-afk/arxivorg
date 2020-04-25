@@ -22,7 +22,7 @@ public class FavoritesController implements Initializable  {
     @FXML
     public Button deleteButton;
 private List<Article> favorites=new ArrayList<>();
-
+    private int currentIndex = 1;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -40,8 +40,29 @@ private List<Article> favorites=new ArrayList<>();
         }
     }*/
 
+    public void deleteArticle(ActionEvent actionEvent){
 
     }
+
+
+    public void downloadArticle(ActionEvent actionEvent){
+
+    }
+
+    private Article getSelectedArticle() {
+        Article article = favorites.get(currentIndex);
+        return article;
+    }
+
+    private void activateButton(){
+        if(deleteButton.isDisable() && downloadButton.isDisable()){
+            deleteButton.setDisable(false);
+            downloadButton.setDisable(false);
+        }
+    }
+
+
+}
 
 
 
