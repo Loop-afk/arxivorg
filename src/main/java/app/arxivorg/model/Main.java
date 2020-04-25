@@ -1,4 +1,6 @@
 package app.arxivorg.model;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class Main {
      /*   for(Article list: list1){
             System.out.println(list.getSummary());*/
 
+     ConnectUser.generateJsonFile();
         }
     }
 
