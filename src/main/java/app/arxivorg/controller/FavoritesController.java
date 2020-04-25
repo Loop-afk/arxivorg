@@ -4,6 +4,8 @@ import app.arxivorg.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.text.TextFlow;
+import org.w3c.dom.Text;
 
 import javax.swing.text.html.ListView;
 import java.awt.event.ActionEvent;
@@ -23,8 +25,21 @@ private List<Article> favorites=new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
+
+
+
+
+
+
+    /*public void displayArticles(){
+        for(Article article: favorites){
+            TextFlow flow = new TextFlow();
+            flow.getChildren().addAll(ArxivOrgController.getStyleText(article));
+            listView.getElement().add(flow);
+        }
+    }*/
+
 
     }
 
