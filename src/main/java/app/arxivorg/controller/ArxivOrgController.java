@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,6 +42,10 @@ public class ArxivOrgController implements Initializable {
 
     public ArxivOrgController() throws Exception {
     }
+
+   // public static List<Text>getStyleText(Article article){
+      //  List<Text> texts=new ArrayList<>();
+   // }
 
 
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -176,6 +182,29 @@ public class ArxivOrgController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
