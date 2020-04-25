@@ -21,6 +21,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -298,6 +299,7 @@ public class Article extends Authors {
         return allCategories;
     }
 
+
     //Attention l'ID doit être de forme "xxxx.xxxxx" .
     public static Article filteredByID(LinkedList<Article> listOfArticle, String id) {
         for (Article article : listOfArticle) {
@@ -417,11 +419,11 @@ public class Article extends Authors {
         return response.body();
     }
 
-    public static void Download(Article article) throws IOException {
+    public static void Download(Article article, String path) throws IOException {
         URL url = new URL(article.getLinkOfArticlePDF());
         ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-        String filename = article.getTitle().replaceAll("[:/\"<>?*|]"," ")+".pdf";
-        FileOutputStream fos = new FileOutputStream(filename);
+        String filename = article.getTitle().replaceAll("[:/\"\\n\\r<>?*|]"," ")+".pdf";
+        FileOutputStream fos = new FileOutputStream(new File (path + File.separator + filename));
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
     }
 }
