@@ -298,6 +298,7 @@ public class Article extends Authors {
         return allCategories;
     }
 
+
     //Attention l'ID doit être de forme "xxxx.xxxxx" .
     public static Article filteredByID(LinkedList<Article> listOfArticle, String id) {
         for (Article article : listOfArticle) {
@@ -420,8 +421,8 @@ public class Article extends Authors {
     public static void Download(Article article) throws IOException {
         URL url = new URL(article.getLinkOfArticlePDF());
         ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-        String filename = article.getTitle().replaceAll("[:/\"<>?*|]"," ")+".pdf";
-        FileOutputStream fos = new FileOutputStream(filename);
+        String filename = article.getTitle().replaceAll("[:/\"\\n\\r<>?*|]"," ")+".pdf";
+        FileOutputStream fos = new FileOutputStream(new File (filename));
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
     }
 }
