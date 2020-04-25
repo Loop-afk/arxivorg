@@ -6,13 +6,11 @@ import java.util.LinkedList;
 public class User {
     private final String username;
     private String password;
-    private final Date dateOfCreation;
     private LinkedList<Article> favoris;
 
-    public User(String username, String password, Date dateOfCreation) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.dateOfCreation = dateOfCreation;
         this.favoris = new LinkedList<>();
     }
 
@@ -24,10 +22,6 @@ public class User {
         return password;
     }
 
-    public Date getDateOfCreation() {
-        return dateOfCreation;
-    }
-
     public LinkedList<Article> getFavoris() {
         return favoris;
     }
@@ -36,4 +30,12 @@ public class User {
         this.favoris.addLast(article);
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", favoris=" + favoris +
+                '}';
+    }
 }
