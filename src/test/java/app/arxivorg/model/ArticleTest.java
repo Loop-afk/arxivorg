@@ -138,8 +138,4 @@ public class ArticleTest {
         assertEquals(testProteinsCopy2, new LinkedList<>());
     }
 
-    @Test
-    public void testDownload() {
-        //TODO: Comment tester le bon fonctionnement du téléchargement?
-    }
 }

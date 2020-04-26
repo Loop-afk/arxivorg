@@ -24,6 +24,5 @@ public class AuthorsTest {
             assertEquals(expected.get(i).getId(), Authors.getAllArticles("Eden Bar").get(i).getId());
         }
     }
-
 }
 
