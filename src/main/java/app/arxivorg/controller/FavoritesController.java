@@ -48,18 +48,46 @@ private List<Article> favorites=new ArrayList<>();
     public void downloadArticle(ActionEvent actionEvent){
 
     }
-
+ //return un article dans une liste view
     private Article getSelectedArticle() {
         Article article = favorites.get(currentIndex);
         return article;
     }
-
+//activation du boutton
     private void activateButton(){
         if(deleteButton.isDisable() && downloadButton.isDisable()){
             deleteButton.setDisable(false);
             downloadButton.setDisable(false);
         }
     }
+    // show all articles favorite
+  /*  public void displayArticles(){
+        for(Article article: favorites){
+            TextFlow flow = new TextFlow();
+            flow.getChildren().addAll(ArxivOrgController.getStyleText(article));
+            listView.getElement().add(flow);
+        }
+    }
+
+
+
+
+   */
+  //désactiver le button
+    private void disableButton(){
+        if(favorites.isEmpty()){
+            deleteButton.setDisable(true);
+            downloadButton.setDisable(true);
+        }
+    }
+   /* private void activateButton(){
+        if(deleteButton.isDisable() && downloadButton.isDisable()){
+            deleteButton.setDisable(false);
+            downloadButton.setDisable(false);
+        }
+    }*/
+
+
 
 
 }
