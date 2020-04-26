@@ -209,6 +209,7 @@ public class ArxivOrgController implements Initializable {
                     names = FXCollections.observableArrayList(favoritesArticles);
                     shortListView.setItems(names);
                 });
+        
     }
 
 }
