@@ -1,4 +1,4 @@
-/*
+
 package app.arxivorg.model;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,4 +128,4 @@ public class ConnectUser {
     public void addFavorite(Article article){
 
     }
-}*/
+}
