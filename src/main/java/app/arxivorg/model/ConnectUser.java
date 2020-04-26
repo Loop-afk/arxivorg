@@ -1,54 +1,133 @@
 package app.arxivorg.model;
 
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class ConnectUser {
-    public static Connection connection;
-    public static boolean isConnected;
-    public static User user;
+    public static JSONObject data = new JSONObject();
 
 
-    public static void createTable() throws Exception{
-        try{
-            Connection connect = getConnection("Admin","forTestOnly");
-            assert connect != null;
-            PreparedStatement createTable = connect.prepareStatement("CREATE TABLE IF NOT EXISTS Users(ID int NOT NULL AUTO_INCREMENT, Username VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL, PRIMARY KEY(ID, Username)");
-            createTable.executeUpdate();
+    //Fonction permettant de créer un fichier JSON qui contiendra tous les utilisateurs.
+    public static void generateJsonFile() throws JSONException{
+    User[] users = {new User("username", "password")};
+    JSONObject json = new JSONObject();
+    json.put("Admin", new JSONArray(users));
+
+    //Création d'un nouveau fichier "Users".
+    FileWriter fs = null;
+        try {
+            fs = new FileWriter("Users");
+        } catch(IOException e) {
+            System.err.println("Erreur lors de l'ouverture du fichier Users.json");
+            System.err.println(e);
+            System.exit(-1);
         }
 
-        catch (Exception e){
-            System.out.println(e);
+        //Ecriture de l'objet json dans le nouveau fichier.
+        try {
+            json.write(fs, 3, 0);
+            fs.flush();
+        } catch(IOException e) {
+            System.err.println("Erreur lors de l'écriture dans le fichier.");
+            System.err.println(e);
+            System.exit(-1);
+        }
+
+        //Fermeture du fichier.
+        try {
+            fs.close();
+        } catch(IOException e) {
+            System.err.println("Erreur lors de la fermeture du fichier.");
+            System.err.println(e);
+            System.exit(-1);
         }
     }
 
-    public static void insertTable(String username, String password) throws Exception{
-        try{
-            Connection connect = getConnection("Admin", "forTestOnly");
-            assert connect != null;
-            PreparedStatement insert = connect.prepareStatement("INSERT INTO Users(Username, Password) VALUES ('" + username + "', '" + password + "')");
-            insert.executeUpdate();
+    public static boolean checkUser(User user){
+        int result = 0;
+
+        //Ouverture du fichier Users.json.
+        FileInputStream fs = null;
+        try {
+            fs = new FileInputStream("Users.json");
+        } catch(FileNotFoundException e) {
+            System.err.println("Fichier Users.json introuvable");
+            System.exit(-1);
         }
-        catch (Exception e){
-            System.out.println(e);
+
+        //Ouvre un scanner pour lire le fichier Users.json.
+        String json = "";
+        Scanner scanner = new Scanner(fs);
+
+        //Construit un string dont le contenu représente celui du fichier JSON.
+        while(scanner.hasNext())
+            json += scanner.nextLine();
+        scanner.close();
+        json = json.replaceAll("[\t ]", "");
+
+        //Convertit le contenu du fichier on objet json.
+        JSONObject tmp = new JSONObject(json);
+
+        //Regarde s'il existe une clef dont le nom représente l'utilisateur et si les valeurs rattachées sont bien celles passée en arguments.
+        if (tmp.get(user.getUsername()) != null) {
+            User test = (User) tmp.get(user.getUsername());
+            if (test.getUsername().equals(user.getUsername()) && test.getPassword().equals(user.getPassword())) {
+                result = 1;
+            }
         }
+
+        try {
+            fs.close();
+        } catch(IOException e) {
+            System.err.println("Erreur lors de la fermeture du fichier.");
+            System.err.println(e);
+            System.exit(-1);
+        }
+
+        return result == 1;
     }
 
-    public static Connection getConnection(String username, String password) throws Exception{
-        try{
-            String driver = "com.mysql.jdbc.Driver";
-            String urlDB = "jdbc:mysql://localhost:3306/database";
-            Class.forName(driver);
+    public void addUser(User user){
+        if (checkUser(user)) {
+            User[] newUser = {new User(user.getUsername(), user.getPassword())};
+            JSONObject json = new JSONObject();
+            json.put("" + user.getUsername() + "", new JSONArray(newUser));
 
-            Connection connect = DriverManager.getConnection(urlDB,username,password);
-            return connect;
+            //Ouvre un lecteur de fichier.
+            FileInputStream fs = null;
+            try {
+                fs = new FileInputStream("Users.json");
+            } catch (FileNotFoundException e) {
+                System.err.println("Fichier Users.json introuvable");
+                System.exit(-1);
+            }
+
+            //Ouvre un scanner pour lire le fichier Users.json.
+            StringBuilder stringJson = new StringBuilder();
+            Scanner scanner = new Scanner(fs);
+
+            //Construit un string dont le contenu représente celui du fichier JSON.
+            while (scanner.hasNext()) {
+                stringJson.append(scanner.nextLine());
+                scanner.close();
+            }
+            stringJson = new StringBuilder(stringJson.toString().replaceAll("[\t ]", ""));
+            String j = stringJson.toString();
+
         }
-        catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
+        else {System.out.println("Veuillez choisir un autre nom d'utilisateur.");}
+    }
+
+    public void addFavorite(Article article){
+
     }
 }

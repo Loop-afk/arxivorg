@@ -4,6 +4,8 @@ import app.arxivorg.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.text.TextFlow;
+import org.w3c.dom.Text;
 
 import javax.swing.text.html.ListView;
 import java.awt.event.ActionEvent;
@@ -20,13 +22,47 @@ public class FavoritesController implements Initializable  {
     @FXML
     public Button deleteButton;
 private List<Article> favorites=new ArrayList<>();
-
+    private int currentIndex = 1;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
+
+
+
+
+
+
+    /*public void displayArticles(){
+        for(Article article: favorites){
+            TextFlow flow = new TextFlow();
+            flow.getChildren().addAll(ArxivOrgController.getStyleText(article));
+            listView.getElement().add(flow);
+        }
+    }*/
+
+    public void deleteArticle(ActionEvent actionEvent){
 
     }
 
+
+    public void downloadArticle(ActionEvent actionEvent){
+
     }
+
+    private Article getSelectedArticle() {
+        Article article = favorites.get(currentIndex);
+        return article;
+    }
+
+    private void activateButton(){
+        if(deleteButton.isDisable() && downloadButton.isDisable()){
+            deleteButton.setDisable(false);
+            downloadButton.setDisable(false);
+        }
+    }
+
+
+}
 
 
 
