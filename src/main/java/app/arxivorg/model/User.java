@@ -1,6 +1,5 @@
 package app.arxivorg.model;
 
-import java.util.Date;
 import java.util.LinkedList;
 
 public class User {
@@ -32,10 +31,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return ""+username+"{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", favoris=" + favoris +
                 '}';
+    }
+
+    public void removeArticle(Article article) {
+        this.favoris.removeIf(favoris -> favoris.getId().equals(article.getId()));
     }
 }
