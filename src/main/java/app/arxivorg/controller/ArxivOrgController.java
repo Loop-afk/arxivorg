@@ -204,9 +204,7 @@ public class ArxivOrgController implements Initializable {
         deleteFavoriteButton.setOnAction(
                 (ActionEvent e) -> {
                     if (!shortListView.getSelectionModel().getSelectedItems().isEmpty() && favoritesArticles != null) {
-                        for (Article deleteFromFavorite : favoritesArticles) {
-                            favoritesArticles.remove(deleteFromFavorite);
-                        }
+                        favoritesArticles.removeIf(deleteFromFavorite -> shortListView.getSelectionModel().getSelectedItems().contains(deleteFromFavorite));
                     }
                     names = FXCollections.observableArrayList(favoritesArticles);
                     shortListView.setItems(names);
