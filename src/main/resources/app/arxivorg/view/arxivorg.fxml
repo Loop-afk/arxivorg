@@ -30,18 +30,18 @@
                         <Insets />
                      </opaqueInsets>
                   </Label>
-                  <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="5.0" layoutY="413.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="23.0" prefWidth="700.0" text="Information article" textAlignment="CENTER" textFill="#111111" wrapText="true">
+                  <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="5.0" layoutY="411.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="700.0" text="Information article" textAlignment="CENTER" textFill="#111111" wrapText="true">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="addFavoriteButton" alignment="TOP_LEFT" layoutX="825.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="32.0" prefWidth="136.0" text="Favoris">
+                  <Button fx:id="addFavoriteButton" alignment="TOP_LEFT" layoutX="889.0" layoutY="401.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="31.0" prefWidth="86.0" style="-fx-background-color: #7156BB;" text="Favoris" textFill="#ebecee">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
                   <TextArea fx:id="showDetailsField" editable="false" layoutX="5.0" layoutY="436.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="284.0" prefWidth="980.0" text="Résumé de l'article une fois cliqué dessus" />
-                  <Button fx:id="deleteFavoriteButton" alignment="TOP_LEFT" layoutX="825.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="32.0" prefWidth="136.0" text="Supprimer" visible="false">
+                  <Button fx:id="deleteFavoriteButton" alignment="TOP_LEFT" layoutX="871.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="31.0" prefWidth="103.0" style="-fx-background-color: #7156BB;" text="Supprimer" textFill="#ebecee" visible="false">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -70,7 +70,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <ComboBox id="cbxCategories" fx:id="cbxCategories" layoutX="18.0" layoutY="131.0" prefHeight="29.0" prefWidth="270.0" promptText="Sélectionnez..." />
+                  <ComboBox fx:id="cbxCategories" layoutX="18.0" layoutY="131.0" prefHeight="29.0" prefWidth="270.0" promptText="Sélectionnez la catégorie" />
                   <Label layoutX="102.0" layoutY="184.0" prefHeight="29.0" prefWidth="96.0" text="Choisir une date" textAlignment="CENTER" textFill="#fcf8f8">
                      <font>
                         <Font size="13.0" />
@@ -78,7 +78,7 @@
                   </Label>
                   <DatePicker layoutX="63.0" layoutY="213.0" />
                   <TextField id="txt_KeyWords" fx:id="searchByKeyWords" layoutX="77.0" layoutY="279.0" promptText="Entrez un mot clé" />
-                  <TextField id="txt_Authors" fx:id="searchByAuthors" layoutX="75.0" layoutY="347.0" promptText="Recherche par auteurs" />
+                  <TextField id="txt_Authors" fx:id="searchByAuthors" layoutX="75.0" layoutY="347.0" promptText="Recherche par auteur" />
                   <Button fx:id="downloadButton" layoutX="110.0" layoutY="415.0" mnemonicParsing="false" style="-fx-border-radius: 12px;" text="Télécharger" />
                </children>
             </Pane>
