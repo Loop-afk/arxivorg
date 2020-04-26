@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ArxivOrgController implements Initializable {
 
@@ -25,7 +24,6 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextArea showDetailsField;
     @FXML private TextField searchByKeyWords;
     @FXML private TextField searchByAuthors;
-    @FXML private VBox vBoxInfos;
     @FXML private Button addFavoriteButton;
     @FXML private Button deleteFavoriteButton;
     @FXML private Label lblList;
@@ -165,7 +163,6 @@ public class ArxivOrgController implements Initializable {
                     if (download != null) {
                         try {
                             for (Article articles : shortListView.getSelectionModel().getSelectedItems()) {
-                                new File(download.getPath());
                                 Article.Download(articles, download.getAbsolutePath());
                             }
                         } catch (IOException ex) {
