@@ -71,6 +71,7 @@ public class ArxivOrgController implements Initializable {
     @FXML
     private void setCbxCategories() {
         try {
+            LinkedList<Article> filteredByCategories = new LinkedList<>(shortListView.getItems());
             Scanner scanner = new Scanner(new File("Categories.txt"));
             Map<String, String> categories = new LinkedHashMap<>();
             while (scanner.hasNextLine()) {
@@ -84,9 +85,10 @@ public class ArxivOrgController implements Initializable {
                     (ActionEvent e) -> {
                         for (Map.Entry<String, String> key : categories.entrySet()) {
                             if (key.getValue().contains(cbxCategories.getSelectionModel().getSelectedItem()))
-                                names = FXCollections.observableArrayList(Article.filterByCategory(infos, key.getKey()));
+                                names = FXCollections.observableArrayList(Article.filterByCategory(filteredByCategories, key.getKey()));
                         }
                         setShortListView();
+
                    /* names.clear();
                     shortListView.getItems().addAll(Article.filterByCategory(infos, cbxCategories.getSelectionModel().getSelectedItem()));*/
                     });
@@ -110,6 +112,7 @@ public class ArxivOrgController implements Initializable {
                     //shortListView.setItems(names);
                     setShortListView();
                     searchByAuthors();
+                    setCbxCategories();
 
                 });
     }
@@ -145,6 +148,8 @@ public class ArxivOrgController implements Initializable {
 
                     }
                     setShortListView();
+                    setCbxCategories();
+
                 });
     }
 
@@ -209,7 +214,6 @@ public class ArxivOrgController implements Initializable {
                     names = FXCollections.observableArrayList(favoritesArticles);
                     shortListView.setItems(names);
                 });
-        
     }
 
 }
