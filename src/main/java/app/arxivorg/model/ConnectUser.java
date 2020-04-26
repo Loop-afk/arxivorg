@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class ConnectUser {
-
+/*
     //Fonction permettant de créer un fichier JSON qui contiendra tous les utilisateurs.
     public static void generateJsonFile() throws JSONException{
     User[] users = {new User("username", "password")};
@@ -189,5 +189,7 @@ public class ConnectUser {
 
         //Réécriture du fichier avec le changement.
         writer.write(json.toString());
-    }
+       } 
+ */
+
 }
