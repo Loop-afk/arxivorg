@@ -21,7 +21,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -135,9 +134,7 @@ public class Article extends Authors {
 
         try {
             builder = factory.newDocumentBuilder();
-            //TODO:Regarder pour corriger les exceptions que ça lance.
             Document document = builder.parse(new InputSource(new StringReader(file)));
-            //Document document = builder.parse(file);
 
             DocumentTraversal traversal = (DocumentTraversal) document;
             NodeIterator iterator = traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
@@ -389,7 +386,7 @@ public class Article extends Authors {
         }
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(URItoGet+"&start=0&max_results=" + numberMaxOfArticles))
+                .uri(URI.create(URItoGet.toString()+"&start=0&max_results=" + numberMaxOfArticles))
                 .setHeader("User-Agent", "Java 11 HttpClient Bot")
                 .build();
 
@@ -397,7 +394,6 @@ public class Article extends Authors {
         return response.body();
     }
 
-    //TODO: Faire attention car de base dans l'API ne rend que 10 articles au maximum. Peut-être passsé la limite à 100 de base?
     public static String getArticlesFromArXiv(String search) throws Exception {
         String[] searchWords = toArray(search, ",");
         StringBuilder URItoGet = new StringBuilder("http://export.arxiv.org/api/query?search_query=all:");
@@ -411,7 +407,7 @@ public class Article extends Authors {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(URItoGet.toString()))
+                .uri(URI.create(URItoGet.toString()+"&start=0&max_results=100"))
                 .setHeader("User-Agent", "Java 11 HttpClient Bot")
                 .build();
 

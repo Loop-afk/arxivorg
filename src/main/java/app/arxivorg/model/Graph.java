@@ -56,7 +56,7 @@ public class Graph {
                     if (node1.getName().equals(node2.getName()) || contains(nodePair)) {
                         k--;
                     } else {
-                        result.getArretes().add(new Arrete(node1, node2, 1));
+                        result.getArretes().add(new Arrete(node1, node2));
                     }
                 }
             }
